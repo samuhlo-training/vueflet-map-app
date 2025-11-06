@@ -1,15 +1,14 @@
 <template>
     <h1 class="text-3xl font-bold mb-4">MapView</h1>
         <!-- Mostrar información de carga -->
-    <div v-if="isLoading">
-      <p>Cargando ubicación...</p>
-    </div>
+   <ScreenLoader v-if="isLoading" msg="Obteniendo ubicación..." />
 
     <!-- Mostrar ubicación cuando esté lista -->
     <div v-else-if="userLocation">
       <p class="text-2xl">Tu ubicación actual:</p>
       <p class="font-bold">Latitud: {{ userLocation[0] }}</p>
       <p class="font-bold">Longitud: {{ userLocation[1] }}</p>
+      <p >isUserLocationReady: {{ isUserLocationReady }}</p>
     </div>
 
     <div v-else>
@@ -21,6 +20,7 @@
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMapStore } from '@/modules/map/stores/map.store'
+import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 
 
 // 1. Obtener el store
