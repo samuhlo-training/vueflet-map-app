@@ -1,9 +1,9 @@
 <template>
   <div class="h-screen w-screen flex flex-col overflow-hidden">
-    <header class="text-center py-3 shrink-0">
+    <header class="text-center my-4 shrink-0">
       <h1 class="text-3xl font-bold">Vue<span class="text-green-600"> + </span>Leaflet</h1>
     </header>
-    <main class="flex-1 p-27 flex justify-center items-center overflow-hidden">
+    <main class="flex-1 px-27 pb-27  flex justify-center items-center overflow-hidden">
       <MapView />
     </main>
     <div class="z-999 right-0 bottom-0 fixed mb-4 mr-4 logo">
