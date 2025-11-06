@@ -1,16 +1,15 @@
 <template>
-    <h1 class="text-3xl font-bold mb-4">MapView</h1>
-        <!-- Mostrar información de carga -->
-   <ScreenLoader v-if="isLoading" msg="Obteniendo ubicación..." />
+  <div class="w-full h-full">
+    <!-- Mostrar información de carga -->
+    <ScreenLoader v-if="isLoading" msg="Obteniendo ubicación..." />
 
     <!-- Mostrar ubicación cuando esté lista -->
-    <div v-else-if="userLocation" class="h-screen w-screen flex justify-center items-center">
-      <Map :userLocation="userLocation" />
-    </div>
+    <Map v-else-if="userLocation" :userLocation="userLocation" class="w-full h-full" />
 
     <div v-else>
       <p>No se pudo obtener la ubicación</p>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
