@@ -4,11 +4,8 @@
    <ScreenLoader v-if="isLoading" msg="Obteniendo ubicación..." />
 
     <!-- Mostrar ubicación cuando esté lista -->
-    <div v-else-if="userLocation">
-      <p class="text-2xl">Tu ubicación actual:</p>
-      <p class="font-bold">Latitud: {{ userLocation[0] }}</p>
-      <p class="font-bold">Longitud: {{ userLocation[1] }}</p>
-      <p >isUserLocationReady: {{ isUserLocationReady }}</p>
+    <div v-else-if="userLocation" class="h-screen w-screen flex justify-center items-center">
+      <Map :userLocation="userLocation" />
     </div>
 
     <div v-else>
@@ -21,13 +18,14 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMapStore } from '@/modules/map/stores/map.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
+import Map from '@/modules/map/components/Map.vue'
 
 
 // 1. Obtener el store
 const mapStore = useMapStore()
 
 // 2. Extraer las propiedades REACTIVAS del store (estado y getters)
-const { isLoading, userLocation, isUserLocationReady } = storeToRefs(mapStore)
+const { isLoading, userLocation } = storeToRefs(mapStore)
 
 // 3. Extraer las acciones (funciones) directamente del store
 const { getCurrentPosition } = mapStore
