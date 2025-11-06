@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { UserLocation } from "../interfaces/map.interfaces";
+import type { UserLocation } from "@/modules/map/interfaces/map.interfaces";
 
 export const useMapStore = defineStore("map", () => {
   // State - Cada propiedad separada (patrón correcto de Pinia)

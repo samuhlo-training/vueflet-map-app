@@ -7,8 +7,8 @@
 
 <script setup lang="ts">
 
-import vueLogo from '../../../assets/vue.svg'
-import MapView from '../../map/views/MapView.vue';
+import vueLogo from '@/assets/vue.svg'
+import MapView from '@/modules/map/views/MapView.vue';
 
 </script>
  

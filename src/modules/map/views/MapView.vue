@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMapStore } from '../../map/stores/map.store'
+import { useMapStore } from '@/modules/map/stores/map.store'
 
 
 // 1. Obtener el store
