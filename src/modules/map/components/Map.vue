@@ -1,7 +1,7 @@
 <template>
    <l-map
         :center="userLocation"
-        :zoom="15"
+        :zoom="25"
       >
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -15,11 +15,9 @@
 </template>
 
 <script setup lang="ts">
-// ⭐ IMPORTANTE: Importar Leaflet PRIMERO (antes que vue-leaflet)
+
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
-// Luego importar los componentes de vue-leaflet
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 
 // 🔧 Fix para los iconos de Leaflet (otro problema común)
