@@ -36,6 +36,7 @@ L.Icon.Default.mergeOptions({
 const mapStore = useMapStore();
 const mapRef = ref<InstanceType<typeof LMap> | null>(null);
 
+  // Manejar el evento de mapa listo para guardar la instancia del mapa en el store
 const onMapReady = () => {
   if (mapRef.value?.leafletObject) {
     console.log('Map instance found:', mapRef.value.leafletObject);
