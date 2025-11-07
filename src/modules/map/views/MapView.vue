@@ -15,19 +15,19 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMapStore } from '@/modules/map/stores/map.store'
+import { usePlacesStore } from '@/modules/map/stores/places.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 import Map from '@/modules/map/components/Map.vue'
 
 
 
-const mapStore = useMapStore()
+const placesStore = usePlacesStore()
 
 // Extraer los estados (variables reactivas) directamente del store
-const { isLoading, userLocation } = storeToRefs(mapStore)
+const { isLoading, userLocation } = storeToRefs(placesStore)
 
 
-const { getCurrentPosition } = mapStore
+const { getCurrentPosition } = placesStore
 
 // Montar primero el componente y luego obtener la ubicación
 onMounted(async () => {

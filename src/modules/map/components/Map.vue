@@ -10,8 +10,7 @@
           name="OpenStreetMap"
         />
         
-        <l-marker :lat-lng="userLocation" />
-
+        <MarkerPopup :location="userLocation" title="Mi Ubicacion" badge="Actual" />
       </l-map>
 </template>
 
@@ -19,10 +18,10 @@
 
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import MarkerPopup from "./MarkerPopup.vue";
 
-// 🔧 Fix para los iconos de Leaflet (otro problema común)
-// Esto asegura que los iconos de los marcadores se vean correctamente
+// 🔧 Fix para los iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
