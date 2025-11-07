@@ -33,6 +33,20 @@ export const useMapStore = defineStore("map", () => {
     }
   };
 
+  const setCenterWithAnimation = (
+    lat: number,
+    lng: number,
+    zoom?: number,
+    duration: number = 1000
+  ) => {
+    if (mapInstance.value) {
+      mapInstance.value.flyTo([lat, lng], zoom || mapInstance.value.getZoom(), {
+        duration: duration / 1000, // flyTo usa segundos
+        easeLinearity: 0.25,
+      });
+    }
+  };
+
   const setZoom = (zoom: number) => {
     mapInstance.value?.setZoom(zoom);
   };
@@ -84,6 +98,7 @@ export const useMapStore = defineStore("map", () => {
     zoomIn,
     zoomOut,
     setCenter,
+    setCenterWithAnimation,
     setZoom,
     fitBounds,
     addMarker,
