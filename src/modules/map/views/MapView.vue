@@ -5,10 +5,17 @@
 
     <!-- Mostrar ubicación cuando esté lista -->
     <Map v-else-if="userLocation" :userLocation="userLocation" class="w-full h-full" />
-
-    <div v-else>
+   
+       <div v-else>
       <p>No se pudo obtener la ubicación</p>
     </div>
+
+      <!-- Zona Botones -->
+     <div class="absolute top-4 right-10">
+       <MyLocationButton />
+     </div>
+
+   
   </div>
 </template>
 
@@ -18,6 +25,7 @@ import { storeToRefs } from 'pinia'
 import { usePlacesStore } from '@/modules/map/stores/places.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 import Map from '@/modules/map/components/Map.vue'
+import MyLocationButton from '@/modules/map/components/MyLocationButton.vue'
 
 
 
