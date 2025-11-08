@@ -1,12 +1,12 @@
 <template>
-    <button @click="centerMapOnUserLocation" class="bg-green-600 text-white font-bold p-2 rounded shadow cursor-pointer hover:bg-gray-800 transition">
+    <button @click="centerMapOnUserLocation" class="cursor-pointer px-3 py-1.5 text-md font-medium text-white bg-[#42b983] rounded hover:shadow-lg hover:bg-[#2d3d4d] transition-all duration-200">
         Mi Ubicación
     </button>
 </template>
 
 <script setup lang="ts">
-import { useMapStore } from "../stores/map.store";
-import { usePlacesStore } from "../stores/places.store";
+import { useMapStore } from "../../map/stores/map.store";
+import { usePlacesStore } from "../../map/stores/places.store";
 
 const mapStore = useMapStore();
 const placesStore = usePlacesStore();

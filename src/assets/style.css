@@ -10,3 +10,24 @@
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
+
+// Custom colors
+
+@theme colors {
+  primary-color: #42b883;
+  secondary-color: #36495e;
+}
+
+.bg-primary-color {
+  background-color: #42b883;
+}
+
+.bg-secondary-color {
+  background-color: #36495e;
+}
+.text-primary-color {
+  color: #42b883;
+}
+.text-secondary-color {
+  color: #36495e;
+}

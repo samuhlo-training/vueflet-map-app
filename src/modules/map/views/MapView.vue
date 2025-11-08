@@ -10,12 +10,14 @@
       <p>No se pudo obtener la ubicación</p>
     </div>
 
-      <!-- Zona Botones -->
+      <!-- Zona Botones Derecha-->
      <div class="absolute top-4 right-10">
        <MyLocationButton />
      </div>
-
-   
+      <!-- Zona Barra de Búsqueda Izquierda-->
+      <div class="absolute top-4 left-10">
+        <SearchBar />
+      </div>
   </div>
 </template>
 
@@ -25,7 +27,8 @@ import { storeToRefs } from 'pinia'
 import { usePlacesStore } from '@/modules/map/stores/places.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 import Map from '@/modules/map/components/Map.vue'
-import MyLocationButton from '@/modules/map/components/MyLocationButton.vue'
+import MyLocationButton from '@/modules/map-controls/components/MyLocationButton.vue'
+import SearchBar from '@/modules/map-controls/components/SearchBar.vue'
 
 
 

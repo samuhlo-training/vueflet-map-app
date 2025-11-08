@@ -39,8 +39,12 @@ const mapRef = ref<InstanceType<typeof LMap> | null>(null);
   // Manejar el evento de mapa listo para guardar la instancia del mapa en el store
 const onMapReady = () => {
   if (mapRef.value?.leafletObject) {
-    console.log('Map instance found:', mapRef.value.leafletObject);
-    mapStore.setMap(mapRef.value.leafletObject as L.Map);
+    const map = mapRef.value.leafletObject as L.Map;
+    // Remover los controles de zoom directamente con JS ( no funciona con las opciones de Vue-Leaflet)
+    if (map.zoomControl) {
+      map.removeControl(map.zoomControl);
+    }
+    mapStore.setMap(map);
   } else {
     console.warn('Map instance not found', mapRef.value);
   }
