@@ -14,7 +14,7 @@ const placesStore = usePlacesStore();
 const centerMapOnUserLocation = () => {
     const userLocation = placesStore.userLocation;
     if (userLocation) {
-        mapStore.setCenterWithAnimation(userLocation[0], userLocation[1], 18);
+        mapStore.setCenterWithAnimation(userLocation[0], userLocation[1], 18, 1800);
     }
 };
 </script>

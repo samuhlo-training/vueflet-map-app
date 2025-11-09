@@ -1,5 +1,5 @@
 <template>
-  <l-marker :lat-lng="location">
+  <l-marker :lat-lng="location" :icon="currentIcon">
     <l-popup :options="popupOptions">
       <div class="p-2 font-inherit">
         <!-- Encabezado -->
@@ -16,7 +16,7 @@
           <p class="text-xs text-gray-500">
             📍 {{ location[0].toFixed(4) }}, {{ location[1].toFixed(4) }}
           </p>
-          <p class="text-xs text-gray-400">{{ timestamp }}</p>
+          <p v-if="timestamp" class="text-xs text-gray-400">{{ formatedTimestamp }}</p>
         </div>
 
       
@@ -28,26 +28,61 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
+import L from 'leaflet'
 
 interface Props {
   location: [number, number]
   title: string
   badge?: string
   showCoordinates?: boolean
-
+  timestamp?: boolean
   maxWidth?: number
+  iconType?: 'user' | 'active' | 'default'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showCoordinates: true,
   showActions: false,
-  maxWidth: 300
+  timestamp: false,
+  maxWidth: 300,
+  iconType: 'default'
 })
+
+// Iconos personalizados
+const icons = {
+  default: L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  }),
+  active: L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  }),
+  user: L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  })
+}
+
+// Icono actual basado en el tipo
+const currentIcon = computed(() => icons[props.iconType])
 
 
 
 // Formatea la hora actual
-const timestamp = computed(() => {
+const formatedTimestamp = computed(() => {
   const date = new Date()
   return date.toLocaleTimeString('es-ES', {
     hour: '2-digit',

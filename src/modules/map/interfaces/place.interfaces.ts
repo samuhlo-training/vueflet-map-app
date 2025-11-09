@@ -13,4 +13,7 @@ export interface Place {
   place_id: number;
   place_rank: number;
   type: string;
+  // Propiedades agregadas por el store
+  id: number;
+  coordinates: [number, number];
 }

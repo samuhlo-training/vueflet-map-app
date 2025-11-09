@@ -15,7 +15,7 @@
        <MyLocationButton />
      </div>
       <!-- Zona Barra de Búsqueda Izquierda-->
-      <div class="absolute top-4 left-10">
+      <div class="absolute top-1 left-10">
         <SearchBar />
       </div>
   </div>
