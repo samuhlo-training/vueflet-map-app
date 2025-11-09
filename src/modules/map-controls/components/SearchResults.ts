@@ -47,7 +47,10 @@ export const useSearchResults = () => {
     };
 
     // Retornar el zoom específico o un valor por defecto
-    return zoomLevels[addresstype] || 13;
+    const normalizedType = addresstype.toLowerCase();
+    const zoom = zoomLevels[normalizedType] || 13;
+    console.log(`Address type: "${addresstype}" -> Zoom: ${zoom}`);
+    return zoom;
   };
 
   // Función para establecer el lugar activo
@@ -57,6 +60,7 @@ export const useSearchResults = () => {
     if (place) {
       const [lat, lon] = place.coordinates;
       const zoom = getZoomByAddressType(place.addresstype);
+      console.log(`Moviendo a: [${lat}, ${lon}] con zoom ${zoom}`);
       mapStore.setCenterWithAnimation(lat, lon, zoom, 2100);
     }
     placesStore.setActivePlaceId(placeId);
