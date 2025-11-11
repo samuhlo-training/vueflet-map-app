@@ -11,11 +11,11 @@
     </div>
 
       <!-- Zona Botones Derecha-->
-     <div class="absolute top-4 right-10">
+     <div class="absolute top-3 right-4 z-999">
        <MyLocationButton />
      </div>
       <!-- Zona Barra de Búsqueda Izquierda-->
-      <div class="absolute top-1 left-10">
+      <div class="absolute top-3 left-4">
         <SearchBar />
       </div>
   </div>

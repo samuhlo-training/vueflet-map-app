@@ -1,5 +1,5 @@
 <template>
-    <button @click="centerMapOnUserLocation" class=" px-3 py-1.5 text-md font-medium text-white bg-[#4DB487] rounded hover:shadow-lg hover:bg-[#2d3d4d] transition-all duration-200 cursor-pointer">
+    <button @click="centerMapOnUserLocation" class=" px-3 py-1.5 text-md font-medium text-white bg-[#4DB487] rounded hover:shadow-lg hover:bg-[#2d3d4d] transition-all duration-200 cursor-pointer z-999">
         Mi Ubicación
     </button>
 </template>
