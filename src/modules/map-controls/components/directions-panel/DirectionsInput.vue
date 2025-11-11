@@ -116,7 +116,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { usePlacesStore } from '@/modules/map/stores/places.store';
+import { usePlaceSearch } from '../../composables/usePlaceSearch';
 import type { Place } from '@/modules/map/interfaces/place.interfaces';
 import type { WaypointType } from '@/modules/map/interfaces/routing.interfaces';
 
@@ -171,14 +171,15 @@ const emit = defineEmits<Emits>();
 // STATE
 // ============================================
 
-const placesStore = usePlacesStore();
 const inputRef = ref<HTMLInputElement | null>(null);
 const searchQuery = ref(props.modelValue);
 const showResults = ref(false);
-const isSearching = ref(false);
 
-// Debounce timer para no hacer demasiadas búsquedas
-let searchTimer: ReturnType<typeof setTimeout> | null = null;
+// Usar el composable de búsqueda
+const { search, isSearching, filteredResults: searchResults } = usePlaceSearch({ 
+  debounceMs: 300, 
+  maxResults: 5 
+});
 
 // ============================================
 // COMPUTED
@@ -188,7 +189,7 @@ let searchTimer: ReturnType<typeof setTimeout> | null = null;
  * filteredResults: Resultados de búsqueda filtrados
  */
 const filteredResults = computed(() => {
-  return placesStore.searchResults.slice(0, 5); // Máximo 5 resultados
+  return searchResults.value;
 });
 
 // ============================================
@@ -212,25 +213,15 @@ watch(() => props.modelValue, (newValue) => {
 const handleInput = () => {
   emit('update:modelValue', searchQuery.value);
   
-  // Limpiar timer anterior
-  if (searchTimer) {
-    clearTimeout(searchTimer);
-  }
-  
   // Si el input está vacío, no buscar
   if (!searchQuery.value.trim()) {
     showResults.value = false;
     return;
   }
   
-  // Buscar después de 300ms (debounce)
-  isSearching.value = true;
+  // Usar el composable de búsqueda con debounce
   showResults.value = true;
-  
-  searchTimer = setTimeout(async () => {
-    await placesStore.searchPlaces(searchQuery.value);
-    isSearching.value = false;
-  }, 300);
+  search(searchQuery.value);
 };
 
 /**
