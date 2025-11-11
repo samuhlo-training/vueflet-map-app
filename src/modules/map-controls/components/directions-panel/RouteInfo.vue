@@ -40,7 +40,7 @@
       <!-- Modo de transporte -->
       <div class="mt-3 pt-3 border-t border-[#d1fae5]">
         <p class="text-xs text-[#6b7280]">
-          {{ getTravelModeText() }}
+          {{ travelModeText }}
         </p>
       </div>
     </div>
@@ -93,7 +93,7 @@
     <!-- Información adicional -->
     <div class="text-xs text-[#6b7280] px-2">
       <p>
-        La ruta se calculó {{ formatCalculatedAt() }}
+        La ruta se calculó {{ calculatedAtText }}
       </p>
     </div>
   </div>
@@ -107,8 +107,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, toRef} from 'vue';
 import type { Route } from '@/modules/map/interfaces/routing.interfaces';
+import { useFormattedRoute } from '../../composables/useFormattedRoute';
 
 // ============================================
 // PROPS
@@ -140,34 +141,18 @@ const instructionsExpanded = ref(props.defaultExpanded);
 // COMPUTED
 // ============================================
 
-/**
- * formattedDistance: Distancia formateada
- */
-const formattedDistance = computed(() => {
-  if (!props.route) return '';
-  
-  const meters = props.route.distance;
-  if (meters >= 1000) {
-    return `${(meters / 1000).toFixed(1)} km`;
-  }
-  return `${Math.round(meters)} m`;
-});
+// FORMATTERS - COMPOSABLE
 
-/**
- * formattedDuration: Duración formateada
- */
-const formattedDuration = computed(() => {
-  if (!props.route) return '';
-  
-  const seconds = props.route.duration;
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  
-  if (hours > 0) {
-    return `${hours}h ${minutes}min`;
-  }
-  return `${minutes} min`;
-});
+const {
+  formattedDistance,
+  formattedDuration,
+  travelModeText,
+  calculatedAtText,
+  formatDistance,
+  formatDuration,
+} = useFormattedRoute(toRef(props, 'route'));
+
+
 
 // ============================================
 // METHODS
@@ -180,68 +165,9 @@ const toggleInstructions = () => {
   instructionsExpanded.value = !instructionsExpanded.value;
 };
 
-/**
- * getTravelModeText: Retorna el texto del modo de transporte
- */
-const getTravelModeText = (): string => {
-  if (!props.route) return '';
-  
-  const modeTexts = {
-    driving: 'En coche',
-    cycling: 'En bicicleta',
-    walking: 'A pie',
-  };
-  
-  return modeTexts[props.route.travelMode] || '';
-};
 
-/**
- * formatDistance: Formatea una distancia en metros
- */
-const formatDistance = (meters: number): string => {
-  if (meters >= 1000) {
-    return `${(meters / 1000).toFixed(1)} km`;
-  }
-  return `${Math.round(meters)} m`;
-};
 
-/**
- * formatDuration: Formatea una duración en segundos
- */
-const formatDuration = (seconds: number): string => {
-  if (seconds < 60) {
-    return `${Math.round(seconds)} seg`;
-  }
-  
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) {
-    return `${minutes} min`;
-  }
-  
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  return `${hours}h ${remainingMinutes}min`;
-};
 
-/**
- * formatCalculatedAt: Formatea la fecha de cálculo
- */
-const formatCalculatedAt = (): string => {
-  if (!props.route) return '';
-  
-  const date = new Date(props.route.calculatedAt);
-  const now = new Date();
-  const diffMinutes = Math.floor((now.getTime() - date.getTime()) / 1000 / 60);
-  
-  if (diffMinutes < 1) {
-    return 'hace un momento';
-  } else if (diffMinutes < 60) {
-    return `hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
-  } else {
-    const hours = Math.floor(diffMinutes / 60);
-    return `hace ${hours} hora${hours > 1 ? 's' : ''}`;
-  }
-};
 </script>
 
 <style scoped>
