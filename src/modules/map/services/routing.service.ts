@@ -121,11 +121,42 @@ class RoutingService {
    *   [originWaypoint, destinationWaypoint],
    *   'driving'
    * );
+   *
+   * NOTA: Este método devuelve solo la ruta principal.
+   * Para obtener rutas alternativas, usa getRoutes()
    */
   async getRoute(
     waypoints: Waypoint[],
     travelMode: TravelMode
   ): Promise<Route> {
+    const routes = await this.getRoutes(waypoints, travelMode, 0);
+    if (!routes[0]) {
+      throw this.createError("NO_ROUTE", "No se pudo calcular ninguna ruta");
+    }
+    return routes[0];
+  }
+
+  /**
+   * getRoutes: Calcula múltiples rutas alternativas
+   *
+   * @param waypoints - Array de waypoints ordenados (origen, paradas, destino)
+   * @param travelMode - Modo de transporte
+   * @param maxAlternatives - Número máximo de rutas alternativas (por defecto 2)
+   * @returns Promise con array de rutas (la primera es la principal)
+   * @throws RoutingError si algo falla
+   *
+   * Ejemplo de uso:
+   * const routes = await routingService.getRoutes(
+   *   [originWaypoint, destinationWaypoint],
+   *   'driving',
+   *   2 // Devuelve hasta 3 rutas (1 principal + 2 alternativas)
+   * );
+   */
+  async getRoutes(
+    waypoints: Waypoint[],
+    travelMode: TravelMode,
+    maxAlternatives: number = 2
+  ): Promise<Route[]> {
     // Validación: necesitamos al menos 2 waypoints
     if (waypoints.length < 2) {
       throw this.createError(
@@ -135,10 +166,10 @@ class RoutingService {
     }
 
     try {
-      // 1. Construir la URL de la API
-      const url = this.buildOSRMUrl(waypoints, travelMode);
+      // 1. Construir la URL de la API con soporte para alternativas
+      const url = this.buildOSRMUrl(waypoints, travelMode, maxAlternatives);
 
-      console.log("🚗 Llamando a OSRM:", url);
+      console.log("🚗 Llamando a OSRM con alternativas:", url);
 
       // 2. Hacer la petición HTTP
       const response = await fetch(url);
@@ -154,7 +185,7 @@ class RoutingService {
       // 4. Parsear la respuesta JSON
       const data: OSRMResponse = await response.json();
 
-      // 5. Verificar que OSRM encontró una ruta
+      // 5. Verificar que OSRM encontró al menos una ruta
       if (data.code !== "Ok" || !data.routes || data.routes.length === 0) {
         throw this.createError(
           "NO_ROUTE",
@@ -162,25 +193,22 @@ class RoutingService {
         );
       }
 
-      // Obtener la primera ruta
-      const osrmRoute = data.routes[0];
-      if (!osrmRoute) {
-        throw this.createError(
-          "NO_ROUTE",
-          "No se encontró ninguna ruta entre los puntos especificados"
-        );
-      }
+      // 6. Transformar TODAS las rutas de OSRM a nuestro formato
+      const routes = data.routes.map((osrmRoute, index) =>
+        this.transformOSRMRoute(osrmRoute, waypoints, travelMode, index)
+      );
 
-      // 6. Transformar la respuesta de OSRM a nuestro formato
-      const route = this.transformOSRMRoute(osrmRoute, waypoints, travelMode);
+      console.log(
+        `✅ ${routes.length} ruta(s) calculada(s):`,
+        routes.map((r, i) => ({
+          index: i,
+          distance: r.distance,
+          duration: r.duration,
+          segments: r.segments.length,
+        }))
+      );
 
-      console.log("✅ Ruta calculada:", {
-        distance: route.distance,
-        duration: route.duration,
-        segments: route.segments.length,
-      });
-
-      return route;
+      return routes;
     } catch (error) {
       // Si es un RoutingError que ya creamos, lo lanzamos tal cual
       if (this.isRoutingError(error)) {
@@ -188,8 +216,8 @@ class RoutingService {
       }
 
       // Si es otro tipo de error, lo envolvemos
-      console.error("❌ Error calculando ruta:", error);
-      throw this.createError("API_ERROR", "Error al calcular la ruta", error);
+      console.error("❌ Error calculando rutas:", error);
+      throw this.createError("API_ERROR", "Error al calcular las rutas", error);
     }
   }
 
@@ -198,6 +226,7 @@ class RoutingService {
    *
    * @param waypoints - Array de waypoints
    * @param _travelMode - Modo de transporte (no se usa, siempre usamos 'car')
+   * @param alternatives - Número de rutas alternativas a solicitar (por defecto 2)
    * @returns URL completa para hacer la petición
    *
    * Formato de la URL:
@@ -206,7 +235,11 @@ class RoutingService {
    * NOTA: Siempre usamos el servidor 'car' porque es el único disponible
    * públicamente. Los tiempos se ajustarán después según el modo.
    */
-  private buildOSRMUrl(waypoints: Waypoint[], _travelMode: TravelMode): string {
+  private buildOSRMUrl(
+    waypoints: Waypoint[],
+    _travelMode: TravelMode,
+    alternatives: number = 2
+  ): string {
     // Siempre usar el servidor 'car'
     const baseUrl = OSRM_BASE_URL;
 
@@ -222,6 +255,8 @@ class RoutingService {
       geometries: "geojson", // Formato GeoJSON (más fácil de usar)
       steps: "true", // Queremos los pasos detallados
       annotations: "false", // No necesitamos anotaciones extra
+      alternatives: alternatives.toString(), // 🆕 Pedir rutas alternativas (true o número)
+      continue_straight: "default", // 🆕 Permitir giros en U si es necesario
     });
 
     return `${baseUrl}/${coordinates}?${params.toString()}`;
@@ -233,6 +268,7 @@ class RoutingService {
    * @param osrmRoute - Ruta en formato OSRM
    * @param waypoints - Waypoints originales
    * @param travelMode - Modo de transporte
+   * @param alternativeIndex - Índice de la alternativa (0 = principal, 1+ = alternativas)
    * @returns Ruta en nuestro formato
    *
    * Esta función es el "traductor" entre el formato de OSRM y el nuestro.
@@ -242,7 +278,8 @@ class RoutingService {
   private transformOSRMRoute(
     osrmRoute: OSRMRoute,
     waypoints: Waypoint[],
-    travelMode: TravelMode
+    travelMode: TravelMode,
+    alternativeIndex: number = 0
   ): Route {
     // Extraer todos los segmentos de todas las "legs" (tramos entre waypoints)
     const segments: RouteSegment[] = [];
@@ -295,6 +332,8 @@ class RoutingService {
       waypoints,
       osrmDuration: osrmRoute.duration, // Guardar tiempo original de OSRM
       osrmSegmentDurations, // Guardar tiempos de cada segmento
+      alternativeIndex, // 🆕 Índice de alternativa (0 = principal, 1+ = alternativa)
+      isSelected: alternativeIndex === 0, // 🆕 Por defecto, solo la principal está seleccionada
     };
 
     return route;

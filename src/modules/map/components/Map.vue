@@ -48,8 +48,21 @@
             icon-type="destination"
           />
 
-          <!-- 🎨 RUTA: Línea que conecta origen y destino -->
-          <!-- Solo se muestra si hay una ruta calculada -->
+          <!--  RUTAS ALTERNATIVAS: Líneas más tenues en gris -->
+          <!-- Se dibujan PRIMERO (debajo) para que la principal destaque -->
+          <LPolyline
+            v-for="(altRoute, index) in alternativeRoutes"
+            :key="`alt-route-${index}`"
+            :lat-lngs="altRoute.geometry"
+            color="#9ca3af"
+            :weight="5"
+            :opacity="0.5"
+            @click="handleAlternativeClick(index)"
+            class="cursor-pointer hover:opacity-100 transition-opacity duration-200"
+          />
+
+          <!--  RUTA PRINCIPAL: Línea gruesa y colorida -->
+          <!-- Se dibuja DESPUÉS (encima) para que destaque más -->
           <LPolyline
             v-if="currentRoute"
             :lat-lngs="currentRoute.geometry"
@@ -96,6 +109,7 @@ const isDirectionsMode = computed(() => routingStore.isDirectionsMode);
 
 // Ruta calculada
 const currentRoute = computed(() => routingStore.currentRoute);
+const alternativeRoutes = computed(() => routingStore.alternativeRoutes);
 
 /**
  * routeColor: Color de la línea de ruta según el modo de transporte
@@ -166,6 +180,22 @@ const fitRouteBounds = () => {
   });
   
   console.log('🗺️ Mapa ajustado para mostrar la ruta completa');
+};
+
+/**
+ * handleAlternativeClick: Maneja el click en una ruta alternativa
+ * 
+ * Cuando haces click en una ruta alternativa gris, esta se convierte
+ * en la ruta principal y la anterior pasa a ser alternativa.
+ */
+const handleAlternativeClick = (index: number) => {
+  console.log('🔄 Cambiando a ruta alternativa', index);
+  routingStore.selectAlternativeRoute(index);
+  
+  // Opcional: ajustar el mapa a la nueva ruta
+  setTimeout(() => {
+    fitRouteBounds();
+  }, 100);
 };
 
 /**

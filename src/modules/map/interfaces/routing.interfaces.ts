@@ -142,6 +142,19 @@ export interface Route {
    * Se guardan para mantener los tiempos precisos de driving
    */
   osrmSegmentDurations?: number[];
+
+  /**
+   * Índice de la ruta alternativa (opcional)
+   * - undefined o 0: Ruta principal (la más rápida)
+   * - 1, 2: Rutas alternativas
+   */
+  alternativeIndex?: number;
+
+  /**
+   * Indica si esta ruta está seleccionada por el usuario
+   * Por defecto, la ruta principal (índice 0) está seleccionada
+   */
+  isSelected?: boolean;
 }
 
 /**

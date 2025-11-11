@@ -127,6 +127,9 @@
         :route="currentRoute"
       />
 
+      <!-- 🆕 Rutas alternativas -->
+      <RouteAlternatives v-if="hasRoute" />
+
       <!-- Error -->
       <div
         v-if="routingError"
@@ -160,6 +163,7 @@ import { usePlacesStore } from '@/modules/map/stores/places.store';
 import TravelModeSelector from './TravelModeSelector.vue';
 import DirectionsInput from './DirectionsInput.vue';
 import RouteInfo from './RouteInfo.vue';
+import RouteAlternatives from './RouteAlternatives.vue';
 import type { Place } from '@/modules/map/interfaces/place.interfaces';
 
 // ============================================

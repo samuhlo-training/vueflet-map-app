@@ -50,6 +50,12 @@ export const useRoutingStore = defineStore("routing", () => {
   const currentRoute = ref<Route | null>(null);
 
   /**
+   * alternativeRoutes: Rutas alternativas disponibles
+   * Array vacío = no hay alternativas calculadas
+   */
+  const alternativeRoutes = ref<Route[]>([]);
+
+  /**
    * travelMode: Modo de transporte seleccionado
    * Por defecto: 'driving' (coche)
    */
@@ -419,8 +425,8 @@ export const useRoutingStore = defineStore("routing", () => {
    *
    * Esta función:
    * 1. Valida que haya al menos origen y destino
-   * 2. Llama al servicio de routing (OSRM)
-   * 3. Guarda la ruta calculada en el estado
+   * 2. Llama al servicio de routing (OSRM) pidiendo alternativas
+   * 3. Guarda la ruta principal y las alternativas en el estado
    * 4. Maneja errores si algo falla
    */
   const calculateRoute = async () => {
@@ -439,24 +445,42 @@ export const useRoutingStore = defineStore("routing", () => {
     clearRoutingError();
 
     try {
-      console.log("🚗 Calculando ruta...", {
+      console.log("🚗 Calculando rutas (con alternativas)...", {
         waypoints: waypoints.value.length,
         travelMode: travelMode.value,
       });
 
-      // Llamar al servicio de routing
-      const route = await routingService.getRoute(
+      // Llamar al servicio de routing pidiendo hasta 2 rutas alternativas
+      const routes = await routingService.getRoutes(
         waypoints.value,
-        travelMode.value
+        travelMode.value,
+        2 // Máximo 2 alternativas (total: 3 rutas)
       );
 
-      // Guardar la ruta calculada
-      setRoute(route);
+      // Verificar que obtuvimos al menos una ruta
+      if (!routes || routes.length === 0) {
+        throw {
+          code: "NO_ROUTE",
+          message: "No se encontró ninguna ruta",
+        };
+      }
 
-      console.log("✅ Ruta calculada exitosamente:", {
-        distance: route.distance,
-        duration: route.duration,
-        segments: route.segments.length,
+      // La primera ruta es la principal (más rápida)
+      const mainRoute = routes[0]!;
+      // El resto son alternativas
+      const alternatives = routes.slice(1);
+
+      // Guardar la ruta principal
+      setRoute(mainRoute);
+      // Guardar las alternativas
+      alternativeRoutes.value = alternatives;
+
+      console.log("✅ Rutas calculadas exitosamente:", {
+        principal: {
+          distance: mainRoute.distance,
+          duration: mainRoute.duration,
+        },
+        alternativas: alternatives.length,
       });
     } catch (error) {
       // Si el servicio devuelve un RoutingError, lo usamos directamente
@@ -538,6 +562,55 @@ export const useRoutingStore = defineStore("routing", () => {
     );
   };
 
+  /**
+   * selectAlternativeRoute: Selecciona una ruta alternativa como principal
+   *
+   * @param alternativeIndex - Índice de la alternativa (0 basado, en el array de alternativas)
+   *
+   * Esto intercambia la ruta actual con la alternativa seleccionada.
+   */
+  const selectAlternativeRoute = (alternativeIndex: number) => {
+    if (
+      alternativeIndex < 0 ||
+      alternativeIndex >= alternativeRoutes.value.length
+    ) {
+      console.warn("Índice de alternativa inválido:", alternativeIndex);
+      return;
+    }
+
+    // Obtener la alternativa seleccionada
+    const selectedAlternative = alternativeRoutes.value[alternativeIndex];
+
+    if (!selectedAlternative || !currentRoute.value) {
+      console.warn("No hay ruta o alternativa disponible");
+      return;
+    }
+
+    // Guardar la ruta actual como una alternativa
+    const previousMain = currentRoute.value;
+
+    // Intercambiar: la alternativa se convierte en principal
+    setRoute({
+      ...selectedAlternative,
+      isSelected: true,
+    });
+
+    // Actualizar el array de alternativas
+    const newAlternatives = [...alternativeRoutes.value];
+    newAlternatives[alternativeIndex] = {
+      ...previousMain,
+      isSelected: false,
+    };
+    alternativeRoutes.value = newAlternatives;
+
+    console.log("✅ Ruta alternativa seleccionada:", {
+      nuevaPrincipal: {
+        distance: selectedAlternative.distance,
+        duration: selectedAlternative.duration,
+      },
+    });
+  };
+
   // ============================================
   // RETURN (EXPORTAR)
   // ============================================
@@ -548,6 +621,7 @@ export const useRoutingStore = defineStore("routing", () => {
     uiMode,
     waypoints,
     currentRoute,
+    alternativeRoutes, // 🆕 Rutas alternativas
     travelMode,
     isCalculatingRoute,
     routingError,
@@ -580,5 +654,6 @@ export const useRoutingStore = defineStore("routing", () => {
     clearRoutingError,
     calculateRoute,
     recalculateRouteTimes,
+    selectAlternativeRoute, // 🆕 Seleccionar una ruta alternativa
   };
 });
