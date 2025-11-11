@@ -56,7 +56,7 @@
             @click="handleSwapOriginDestination"
             :disabled="!canSwap"
             type="button"
-            class="p-2 rounded-full transition-all duration-200 transform hover:scale-110"
+            class="p-2 rounded-full transition-all duration-200 transform hover:scale-110 cursor-pointer"
             :class="canSwap 
               ? 'bg-[#f3f4f6] text-[#4DB487] hover:bg-[#e5e7eb]' 
               : 'bg-[#f9fafb] text-[#9ca3af] cursor-not-allowed'"
@@ -95,7 +95,7 @@
         class="w-full py-3 px-4 text-sm font-bold text-white rounded-lg transition-all duration-200 shadow-md"
         :class="isCalculatingRoute
           ? 'bg-[#9ca3af] cursor-not-allowed'
-          : 'bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg transform hover:scale-105'"
+          : 'bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg transform hover:scale-105 cursor-pointer'"
       >
         {{ isCalculatingRoute ? '⏳ Calculando ruta...' : '🗺️ Calcular ruta' }}
       </button>
@@ -106,7 +106,7 @@
         @click="handleCalculateRoute"
         :disabled="isCalculatingRoute"
         type="button"
-        class="w-full py-2 px-4 text-sm font-medium text-[#4DB487] border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
+        class="w-full py-2 px-4 text-sm font-medium text-[#4DB487] border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 cursor-pointer"
       >
         {{ isCalculatingRoute ? 'Recalculando...' : 'Recalcular ruta' }}
       </button>
@@ -148,7 +148,7 @@
         v-if="hasRoute || originName || destinationName"
         @click="handleClearAll"
         type="button"
-        class="w-full py-2 px-3 text-xs font-medium text-[#6b7280] border border-[#e5e7eb] rounded-lg hover:bg-[#f9fafb] transition-all duration-200"
+        class="w-full py-2 px-3 text-xs font-medium text-[#6b7280] border border-[#e5e7eb] rounded-lg hover:bg-[#f9fafb] transition-all duration-200 cursor-pointer"
       >
         🗑️ Limpiar todo
       </button>

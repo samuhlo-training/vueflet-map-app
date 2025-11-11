@@ -17,10 +17,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useSearchBar } from '../composables/useSearchBar';
+import { useSearchBar } from '../../composables/useSearchBar';
 import { useRoutingStore } from '@/modules/map/stores/routing.store';
 import SearchResults from './SearchResults.vue';
-import DirectionsPanel from './DirectionsPanel.vue';
+import DirectionsPanel from '../directions-panel/DirectionsPanel.vue';
 
 const { handleSearch } = useSearchBar();
 

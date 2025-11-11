@@ -50,7 +50,7 @@
       v-if="showInstructionsToggle"
       @click="toggleInstructions"
       type="button"
-      class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] bg-white border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 flex items-center justify-between"
+      class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] bg-white border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 flex items-center justify-between cursor-pointer"
     >
       <span>{{ instructionsExpanded ? 'Ocultar' : 'Ver' }} instrucciones</span>
       <span class="transform transition-transform duration-200" :class="{ 'rotate-180': instructionsExpanded }">

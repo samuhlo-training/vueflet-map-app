@@ -43,7 +43,7 @@
               v-if="type === 'origin' && showMyLocationButton"
               @click="handleMyLocation"
               type="button"
-              class="p-1 text-xs text-[#4DB487] hover:bg-[#f0fdf4] rounded transition-all duration-200"
+              class="p-1 text-xs text-[#4DB487] hover:bg-[#f0fdf4] rounded transition-all duration-200 cursor-pointer"
               title="Usar mi ubicación"
             >
               📍
@@ -54,7 +54,7 @@
               v-if="type === 'waypoint' && showRemoveButton"
               @click="handleRemove"
               type="button"
-              class="p-1 text-xs text-[#ef4444] hover:bg-[#fee2e2] rounded transition-all duration-200"
+              class="p-1 text-xs text-[#ef4444] hover:bg-[#fee2e2] rounded transition-all duration-200 cursor-pointer"
               title="Eliminar parada"
             >
               ✕
@@ -65,7 +65,7 @@
               v-if="searchQuery"
               @click="handleClear"
               type="button"
-              class="p-1 text-xs text-[#6b7280] hover:bg-[#f3f4f6] rounded transition-all duration-200"
+              class="p-1 text-xs text-[#6b7280] hover:bg-[#f3f4f6] rounded transition-all duration-200 cursor-pointer"
               title="Limpiar"
             >
               ⌫
@@ -83,7 +83,7 @@
             :key="place.id"
             @click="handleSelectPlace(place)"
             type="button"
-            class="w-full text-left px-3 py-2 hover:bg-[#f0fdf4] transition-all duration-200 border-b border-[#f3f4f6] last:border-b-0"
+            class="w-full text-left px-3 py-2 hover:bg-[#f0fdf4] transition-all duration-200 border-b border-[#f3f4f6] last:border-b-0 cursor-pointer"
           >
             <p class="text-sm font-medium text-[#1f2937] truncate">
               {{ place.name }}

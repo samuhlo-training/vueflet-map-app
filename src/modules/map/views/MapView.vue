@@ -27,8 +27,8 @@ import { storeToRefs } from 'pinia'
 import { usePlacesStore } from '@/modules/map/stores/places.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 import Map from '@/modules/map/components/Map.vue'
-import MyLocationButton from '@/modules/map-controls/components/MyLocationButton.vue'
-import SearchBar from '@/modules/map-controls/components/SearchBar.vue'
+import MyLocationButton from '@/modules/map-controls/components/directions-panel/MyLocationButton.vue'
+import SearchBar from '@/modules/map-controls/components/search-panel/SearchBar.vue'
 
 
 

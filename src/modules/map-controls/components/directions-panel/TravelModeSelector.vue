@@ -128,7 +128,7 @@ const getButtonClasses = (mode: TravelMode): string => {
     return 'bg-[#4DB487] text-white shadow-md transform scale-105';
   }
   
-  return 'bg-[#f3f4f6] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#1f2937]';
+  return 'bg-[#f3f4f6] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#1f2937] cursor-pointer';
 };
 </script>
 

@@ -23,7 +23,7 @@
         <!-- Botón: Cómo llegar -->
         <button 
           @click.stop="handleGetDirections(place.id)"
-          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg"
+          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg cursor-pointer"
           title="Calcular ruta hacia este lugar"
         >
           Cómo llegar
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSearchResults } from '../composables/useSearchResults';
+import { useSearchResults } from '../../composables/useSearchResults';
 
 // Importar todas las funciones del composable
 const { 
