@@ -56,9 +56,10 @@
           <LPolyline
             v-if="currentRoute && !currentRoute.isSelected"
             :lat-lngs="currentRoute.geometry"
-            color="#9ca3af"
-            :weight="5"
-            :opacity="0.5"
+            color="#374C61"
+            :weight="7"
+            :opacity="0.6"
+            :dash-array="'10, 10'"
             @click="handleAlternativeClick(-1)"
             class="cursor-pointer hover:opacity-100 transition-opacity duration-200"
           />
@@ -68,9 +69,10 @@
             <LPolyline
               v-if="!altRoute.isSelected"
               :lat-lngs="altRoute.geometry"
-              color="#9ca3af"
-              :weight="5"
-              :opacity="0.5"
+              color="#374C61"
+              :weight="7"
+              :opacity="0.6"
+              :dash-array="'10, 10'"
               @click="handleAlternativeClick(index)"
               class="cursor-pointer hover:opacity-100 transition-opacity duration-200"
             />

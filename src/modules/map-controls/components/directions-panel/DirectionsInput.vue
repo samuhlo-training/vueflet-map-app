@@ -76,7 +76,7 @@
         <!-- Resultados de autocompletado -->
         <div
           v-if="showResults && filteredResults.length > 0"
-          class="absolute z-50 w-full mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg max-h-48 overflow-y-auto"
+          class=" absolute z-50 w-3xs mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg max-h-48 overflow-y-auto"
         >
           <button
             v-for="place in filteredResults"
@@ -99,7 +99,7 @@
           v-if="showResults && isSearching"
           class="absolute z-50 w-full mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg p-3 text-center"
         >
-          <p class="text-xs text-[#6b7280]">⏳ Buscando...</p>
+          <p class="text-xs text-[#6b7280]"> Buscando...</p>
         </div>
 
         <!-- Mensaje cuando no hay resultados -->
