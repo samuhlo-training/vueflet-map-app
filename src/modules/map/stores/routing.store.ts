@@ -478,6 +478,53 @@ export const useRoutingStore = defineStore("routing", () => {
   };
 
   /**
+   * recalculateRouteTimes: Recalcula los tiempos de la ruta actual
+   *
+   * Esta función NO llama a la API. Solo recalcula las duraciones:
+   * - Para driving: restaura los tiempos precisos de OSRM
+   * - Para cycling/walking: calcula basándose en velocidades promedio
+   *
+   * Es instantánea porque no hace peticiones HTTP.
+   *
+   * @param newTravelMode - Nuevo modo de transporte
+   */
+  const recalculateRouteTimes = (newTravelMode: TravelMode) => {
+    // Validación: necesitamos una ruta existente
+    if (!currentRoute.value) {
+      console.warn("No hay ruta para recalcular");
+      return;
+    }
+
+    console.log("⏱️ Recalculando tiempos...", {
+      from: currentRoute.value.travelMode,
+      to: newTravelMode,
+    });
+
+    try {
+      // Usar el método del servicio para recalcular
+      const updatedRoute = routingService.recalculateRouteTimes(
+        currentRoute.value,
+        newTravelMode
+      );
+
+      // Actualizar la ruta
+      setRoute(updatedRoute);
+
+      console.log("✅ Tiempos recalculados:", {
+        distance: updatedRoute.distance,
+        duration: updatedRoute.duration,
+      });
+    } catch (error) {
+      console.error("❌ Error recalculando tiempos:", error);
+      setRoutingError({
+        code: "API_ERROR",
+        message: "No se pudieron recalcular los tiempos",
+        details: error,
+      });
+    }
+  };
+
+  /**
    * isRoutingError: Verifica si un error es un RoutingError
    *
    * @param error - Error a verificar
@@ -532,5 +579,6 @@ export const useRoutingStore = defineStore("routing", () => {
     setRoutingError,
     clearRoutingError,
     calculateRoute,
+    recalculateRouteTimes,
   };
 });

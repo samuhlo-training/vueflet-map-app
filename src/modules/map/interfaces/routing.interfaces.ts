@@ -129,6 +129,19 @@ export interface Route {
 
   /** Array de waypoints usados para calcular esta ruta */
   waypoints: Waypoint[];
+
+  /**
+   * Duración original de OSRM para driving (opcional)
+   * Se guarda para poder volver a los tiempos precisos de OSRM
+   * cuando se cambia de cycling/walking de vuelta a driving
+   */
+  osrmDuration?: number;
+
+  /**
+   * Duraciones originales de OSRM para cada segmento (opcional)
+   * Se guardan para mantener los tiempos precisos de driving
+   */
+  osrmSegmentDurations?: number[];
 }
 
 /**

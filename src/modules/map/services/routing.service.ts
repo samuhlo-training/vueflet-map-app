@@ -278,6 +278,11 @@ class RoutingService {
         ? osrmRoute.duration
         : this.calculateDuration(osrmRoute.distance, travelMode);
 
+    // Guardar los tiempos originales de OSRM para poder restaurarlos
+    const osrmSegmentDurations = osrmRoute.legs.flatMap((leg) =>
+      leg.steps.map((step) => step.duration)
+    );
+
     // Crear la ruta en nuestro formato
     const route: Route = {
       id: crypto.randomUUID(),
@@ -288,9 +293,57 @@ class RoutingService {
       travelMode,
       calculatedAt: new Date(),
       waypoints,
+      osrmDuration: osrmRoute.duration, // Guardar tiempo original de OSRM
+      osrmSegmentDurations, // Guardar tiempos de cada segmento
     };
 
     return route;
+  }
+
+  /**
+   * recalculateRouteTimes: Recalcula los tiempos de una ruta existente
+   *
+   * @param route - Ruta existente a recalcular
+   * @param newTravelMode - Nuevo modo de transporte
+   * @returns Ruta con tiempos recalculados
+   *
+   * Este método NO llama a la API. Solo recalcula las duraciones:
+   * - Para driving: usa los tiempos originales de OSRM (precisos)
+   * - Para cycling/walking: calcula basándose en velocidades promedio
+   */
+  recalculateRouteTimes(route: Route, newTravelMode: TravelMode): Route {
+    // Si el modo no cambió, devolver la ruta sin cambios
+    if (route.travelMode === newTravelMode) {
+      return route;
+    }
+
+    let totalDuration: number;
+    let updatedSegments: RouteSegment[];
+
+    if (newTravelMode === "driving") {
+      // Para driving, restaurar los tiempos originales de OSRM
+      totalDuration = route.osrmDuration || route.duration;
+      updatedSegments = route.segments.map((segment, index) => ({
+        ...segment,
+        duration: route.osrmSegmentDurations?.[index] || segment.duration,
+      }));
+    } else {
+      // Para cycling/walking, calcular basándose en la distancia
+      totalDuration = this.calculateDuration(route.distance, newTravelMode);
+      updatedSegments = route.segments.map((segment) => ({
+        ...segment,
+        duration: this.calculateDuration(segment.distance, newTravelMode),
+      }));
+    }
+
+    // Crear nueva ruta con tiempos actualizados
+    return {
+      ...route,
+      segments: updatedSegments,
+      duration: totalDuration,
+      travelMode: newTravelMode,
+      calculatedAt: new Date(),
+    };
   }
 
   /**

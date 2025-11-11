@@ -179,9 +179,9 @@ const localTravelMode = computed({
   get: () => routingStore.travelMode,
   set: (value) => {
     routingStore.setTravelMode(value);
-    // Si ya hay ruta, recalcular automáticamente
+    // Si ya hay ruta, recalcular solo los tiempos (sin llamar a la API)
     if (routingStore.hasRoute) {
-      routingStore.calculateRoute();
+      routingStore.recalculateRouteTimes(value);
     }
   },
 });
