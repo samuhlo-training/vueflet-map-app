@@ -502,7 +502,7 @@ export const useRoutingStore = defineStore("routing", () => {
   };
 
   /**
-   * recalculateRouteTimes: Recalcula los tiempos de la ruta actual
+   * recalculateRouteTimes: Recalcula los tiempos de la ruta actual y alternativas
    *
    * Esta función NO llama a la API. Solo recalcula las duraciones:
    * - Para driving: restaura los tiempos precisos de OSRM
@@ -525,18 +525,27 @@ export const useRoutingStore = defineStore("routing", () => {
     });
 
     try {
-      // Usar el método del servicio para recalcular
+      // 1. Recalcular la ruta principal
       const updatedRoute = routingService.recalculateRouteTimes(
         currentRoute.value,
         newTravelMode
       );
 
-      // Actualizar la ruta
+      // 2. Recalcular todas las rutas alternativas
+      const updatedAlternatives = alternativeRoutes.value.map((altRoute) =>
+        routingService.recalculateRouteTimes(altRoute, newTravelMode)
+      );
+
+      // 3. Actualizar el estado
       setRoute(updatedRoute);
+      alternativeRoutes.value = updatedAlternatives;
 
       console.log("✅ Tiempos recalculados:", {
-        distance: updatedRoute.distance,
-        duration: updatedRoute.duration,
+        principal: {
+          distance: updatedRoute.distance,
+          duration: updatedRoute.duration,
+        },
+        alternativas: updatedAlternatives.length,
       });
     } catch (error) {
       console.error("❌ Error recalculando tiempos:", error);
@@ -565,49 +574,53 @@ export const useRoutingStore = defineStore("routing", () => {
   /**
    * selectAlternativeRoute: Selecciona una ruta alternativa como principal
    *
-   * @param alternativeIndex - Índice de la alternativa (0 basado, en el array de alternativas)
+   * @param alternativeIndex - Índice de la alternativa (-1 = principal, 0+ = alternativas)
    *
-   * Esto intercambia la ruta actual con la alternativa seleccionada.
+   * Solo actualiza los flags isSelected sin mover las rutas de posición.
    */
   const selectAlternativeRoute = (alternativeIndex: number) => {
-    if (
-      alternativeIndex < 0 ||
-      alternativeIndex >= alternativeRoutes.value.length
-    ) {
-      console.warn("Índice de alternativa inválido:", alternativeIndex);
-      return;
+    if (alternativeIndex === -1) {
+      // Seleccionar la ruta principal
+      if (currentRoute.value) {
+        currentRoute.value = {
+          ...currentRoute.value,
+          isSelected: true,
+        };
+      }
+
+      // Deseleccionar todas las alternativas
+      alternativeRoutes.value = alternativeRoutes.value.map((route) => ({
+        ...route,
+        isSelected: false,
+      }));
+    } else {
+      // Seleccionar una alternativa específica
+      if (
+        alternativeIndex < 0 ||
+        alternativeIndex >= alternativeRoutes.value.length
+      ) {
+        console.warn("Índice de alternativa inválido:", alternativeIndex);
+        return;
+      }
+
+      // Deseleccionar la ruta principal
+      if (currentRoute.value) {
+        currentRoute.value = {
+          ...currentRoute.value,
+          isSelected: false,
+        };
+      }
+
+      // Actualizar las alternativas: seleccionar una, deseleccionar las demás
+      alternativeRoutes.value = alternativeRoutes.value.map((route, index) => ({
+        ...route,
+        isSelected: index === alternativeIndex,
+      }));
     }
 
-    // Obtener la alternativa seleccionada
-    const selectedAlternative = alternativeRoutes.value[alternativeIndex];
-
-    if (!selectedAlternative || !currentRoute.value) {
-      console.warn("No hay ruta o alternativa disponible");
-      return;
-    }
-
-    // Guardar la ruta actual como una alternativa
-    const previousMain = currentRoute.value;
-
-    // Intercambiar: la alternativa se convierte en principal
-    setRoute({
-      ...selectedAlternative,
-      isSelected: true,
-    });
-
-    // Actualizar el array de alternativas
-    const newAlternatives = [...alternativeRoutes.value];
-    newAlternatives[alternativeIndex] = {
-      ...previousMain,
-      isSelected: false,
-    };
-    alternativeRoutes.value = newAlternatives;
-
-    console.log("✅ Ruta alternativa seleccionada:", {
-      nuevaPrincipal: {
-        distance: selectedAlternative.distance,
-        duration: selectedAlternative.duration,
-      },
+    console.log("✅ Ruta seleccionada (sin intercambio):", {
+      alternativeIndex,
+      isMainSelected: currentRoute.value?.isSelected,
     });
   };
 

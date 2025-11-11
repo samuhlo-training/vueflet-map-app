@@ -48,28 +48,53 @@
             icon-type="destination"
           />
 
-          <!--  RUTAS ALTERNATIVAS: Líneas más tenues en gris -->
-          <!-- Se dibujan PRIMERO (debajo) para que la principal destaque -->
+          <!-- TODAS LAS RUTAS: Se dibujan en orden con estilos según isSelected -->
+          <!-- Primero las NO seleccionadas (grises, tenues) -->
+          <!-- Luego la seleccionada (colorida, gruesa) -->
+          
+          <!-- Ruta principal (si NO está seleccionada) -->
           <LPolyline
-            v-for="(altRoute, index) in alternativeRoutes"
-            :key="`alt-route-${index}`"
-            :lat-lngs="altRoute.geometry"
+            v-if="currentRoute && !currentRoute.isSelected"
+            :lat-lngs="currentRoute.geometry"
             color="#9ca3af"
             :weight="5"
             :opacity="0.5"
-            @click="handleAlternativeClick(index)"
+            @click="handleAlternativeClick(-1)"
             class="cursor-pointer hover:opacity-100 transition-opacity duration-200"
           />
+          
+          <!-- Rutas alternativas (si NO están seleccionadas) -->
+          <template v-for="(altRoute, index) in alternativeRoutes" :key="`alt-route-${index}-unselected`">
+            <LPolyline
+              v-if="!altRoute.isSelected"
+              :lat-lngs="altRoute.geometry"
+              color="#9ca3af"
+              :weight="5"
+              :opacity="0.5"
+              @click="handleAlternativeClick(index)"
+              class="cursor-pointer hover:opacity-100 transition-opacity duration-200"
+            />
+          </template>
 
-          <!--  RUTA PRINCIPAL: Línea gruesa y colorida -->
-          <!-- Se dibuja DESPUÉS (encima) para que destaque más -->
+          <!-- Ruta principal (si SÍ está seleccionada) -->
           <LPolyline
-            v-if="currentRoute"
+            v-if="currentRoute && currentRoute.isSelected !== false"
             :lat-lngs="currentRoute.geometry"
             :color="routeColor"
             :weight="7"
             :opacity="0.8"
           />
+          
+          <!-- Rutas alternativas (si SÍ están seleccionadas) -->
+          <template v-for="(altRoute, index) in alternativeRoutes" :key="`alt-route-${index}-selected`">
+            <LPolyline
+              v-if="altRoute.isSelected"
+              :lat-lngs="altRoute.geometry"
+              :color="routeColor"
+              :weight="7"
+              :opacity="0.8"
+            />
+          </template>
         </template>
       </l-map>
 </template>
