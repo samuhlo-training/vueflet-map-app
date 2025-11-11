@@ -31,7 +31,6 @@ export const useSearchBar = () => {
 
   return {
     //State
-    searchQuery,
 
     //Getters
 

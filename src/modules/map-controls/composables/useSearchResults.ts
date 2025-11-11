@@ -1,11 +1,13 @@
 // SearchResults.ts
 import { usePlacesStore } from "@/modules/map/stores/places.store";
 import { useMapStore } from "@/modules/map/stores/map.store";
+import { useRoutingStore } from "@/modules/map/stores/routing.store";
 import { computed, watch } from "vue";
 
 export const useSearchResults = () => {
   const placesStore = usePlacesStore();
   const mapStore = useMapStore();
+  const routingStore = useRoutingStore();
 
   // Función para determinar el zoom según el tipo de dirección
   const getZoomByAddressType = (addresstype: string): number => {
@@ -74,6 +76,60 @@ export const useSearchResults = () => {
     }
   );
 
+  /**
+   * handleGetDirections: Maneja el click en el botón "Cómo llegar"
+   *
+   * Esta función:
+   * 1. Cambia el modo de la UI a "directions"
+   * 2. Establece el lugar seleccionado como DESTINO
+   * 3. Intenta usar la ubicación actual del usuario como ORIGEN
+   * 4. Si no hay ubicación del usuario, deja el origen vacío para que lo complete
+   *
+   * @param placeId - ID del lugar seleccionado
+   */
+  const handleGetDirections = (placeId: number) => {
+    // Buscar el lugar en los resultados
+    const place = placesStore.searchResults.find((p) => p.id === placeId);
+
+    if (!place) {
+      console.warn("No se encontró el lugar con ID:", placeId);
+      return;
+    }
+
+    console.log("🗺️ Iniciando direcciones hacia:", place.name);
+
+    // 1. Cambiar al modo de direcciones
+    routingStore.setDirectionsMode();
+
+    // 2. Establecer el lugar como DESTINO
+    const [lat, lon] = place.coordinates;
+    routingStore.setDestination(
+      place.name,
+      [lat, lon],
+      place.id // placeId de Nominatim
+    );
+
+    // 3. Intentar establecer la ubicación actual como ORIGEN
+    if (placesStore.isUserLocationReady && placesStore.userLocation) {
+      const [userLat, userLon] = placesStore.userLocation;
+      routingStore.setOrigin("Mi ubicación", [userLat, userLon]);
+
+      // 4. Calcular la ruta automáticamente
+      // (solo si tenemos origen y destino)
+      console.log("✅ Origen y destino establecidos, calculando ruta...");
+      routingStore.calculateRoute();
+    } else {
+      console.log(
+        "⚠️ No hay ubicación del usuario, solo se estableció el destino"
+      );
+      // El usuario tendrá que establecer manualmente el origen
+    }
+
+    // 5. Mover el mapa al destino
+    const zoom = getZoomByAddressType(place.addresstype);
+    mapStore.setCenterWithAnimation(lat, lon, zoom, 2100);
+  };
+
   return {
     // State
     results: computed(() => placesStore.searchResults),
@@ -84,5 +140,6 @@ export const useSearchResults = () => {
 
     // Actions
     onPlaceClick,
+    handleGetDirections, // Nueva acción
   };
 };
