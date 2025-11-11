@@ -12,7 +12,7 @@
 <template>
   <div v-if="route" class="space-y-3">
     <!-- Resumen de la ruta -->
-    <div class="bg-[#f0fdf4] border border-[#42b983] rounded-lg p-4">
+    <div class="bg-[#f0fdf4] border border-[#4DB487] rounded-lg p-4">
       <h4 class="text-xs font-medium text-[#6b7280] mb-3">
         Ruta calculada
       </h4>
@@ -50,7 +50,7 @@
       v-if="showInstructionsToggle"
       @click="toggleInstructions"
       type="button"
-      class="w-full py-2 px-3 text-sm font-medium text-[#42b983] bg-white border border-[#42b983] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 flex items-center justify-between"
+      class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] bg-white border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 flex items-center justify-between"
     >
       <span>{{ instructionsExpanded ? 'Ocultar' : 'Ver' }} instrucciones</span>
       <span class="transform transition-transform duration-200" :class="{ 'rotate-180': instructionsExpanded }">
@@ -71,7 +71,7 @@
         >
           <div class="flex items-start gap-3">
             <!-- Número del paso -->
-            <div class="shrink-0 w-6 h-6 rounded-full bg-[#42b983] text-white text-xs font-bold flex items-center justify-center mt-0.5">
+            <div class="shrink-0 w-6 h-6 rounded-full bg-[#4DB487] text-white text-xs font-bold flex items-center justify-center mt-0.5">
               {{ index + 1 }}
             </div>
             
@@ -248,7 +248,7 @@ const formatCalculatedAt = (): string => {
 /* Animación suave para el despliegue de instrucciones */
 .max-h-64 {
   scrollbar-width: thin;
-  scrollbar-color: #42b983 #f3f4f6;
+  scrollbar-color: #4DB487 #f3f4f6;
 }
 
 .max-h-64::-webkit-scrollbar {
@@ -260,7 +260,7 @@ const formatCalculatedAt = (): string => {
 }
 
 .max-h-64::-webkit-scrollbar-thumb {
-  background: #42b983;
+  background: #4DB487;
   border-radius: 3px;
 }
 

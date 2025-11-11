@@ -43,7 +43,7 @@
               v-if="type === 'origin' && showMyLocationButton"
               @click="handleMyLocation"
               type="button"
-              class="p-1 text-xs text-[#42b983] hover:bg-[#f0fdf4] rounded transition-all duration-200"
+              class="p-1 text-xs text-[#4DB487] hover:bg-[#f0fdf4] rounded transition-all duration-200"
               title="Usar mi ubicación"
             >
               📍
@@ -309,7 +309,7 @@ const getIcon = (): string => {
 const getIconClasses = (): string => {
   switch (props.type) {
     case 'origin':
-      return 'bg-[#42b983] text-white font-bold';
+      return 'bg-[#4DB487] text-white font-bold';
     case 'destination':
       return 'bg-[#ef4444] text-white font-bold';
     case 'waypoint':
@@ -327,7 +327,7 @@ const getInputClasses = (): string => {
   
   switch (props.type) {
     case 'origin':
-      return `${baseClasses} focus:border-[#42b983] focus:ring-[#42b983]/20`;
+      return `${baseClasses} focus:border-[#4DB487] focus:ring-[#4DB487]/20`;
     case 'destination':
       return `${baseClasses} focus:border-[#ef4444] focus:ring-[#ef4444]/20`;
     case 'waypoint':

@@ -17,7 +17,7 @@
       <div class="flex items-center justify-between">
         <button
           @click="handleBackToSearch"
-          class="text-[#42b983] hover:text-[#35a372] font-medium text-sm transition-all duration-200 flex items-center gap-1"
+          class="text-[#4DB487] hover:text-[#35a372] font-medium text-sm transition-all duration-200 flex items-center gap-1"
         >
           <span>←</span>
           <span>Volver</span>
@@ -58,7 +58,7 @@
             type="button"
             class="p-2 rounded-full transition-all duration-200 transform hover:scale-110"
             :class="canSwap 
-              ? 'bg-[#f3f4f6] text-[#42b983] hover:bg-[#e5e7eb]' 
+              ? 'bg-[#f3f4f6] text-[#4DB487] hover:bg-[#e5e7eb]' 
               : 'bg-[#f9fafb] text-[#9ca3af] cursor-not-allowed'"
             title="Intercambiar origen y destino"
           >
@@ -81,7 +81,7 @@
       <!-- <button
         @click="handleAddWaypoint"
         type="button"
-        class="w-full py-2 px-3 text-sm font-medium text-[#42b983] border border-dashed border-[#42b983] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
+        class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] border border-dashed border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
       >
         + Añadir parada
       </button> -->
@@ -95,7 +95,7 @@
         class="w-full py-3 px-4 text-sm font-bold text-white rounded-lg transition-all duration-200 shadow-md"
         :class="isCalculatingRoute
           ? 'bg-[#9ca3af] cursor-not-allowed'
-          : 'bg-[#42b983] hover:bg-[#35a372] hover:shadow-lg transform hover:scale-105'"
+          : 'bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg transform hover:scale-105'"
       >
         {{ isCalculatingRoute ? '⏳ Calculando ruta...' : '🗺️ Calcular ruta' }}
       </button>
@@ -106,7 +106,7 @@
         @click="handleCalculateRoute"
         :disabled="isCalculatingRoute"
         type="button"
-        class="w-full py-2 px-4 text-sm font-medium text-[#42b983] border border-[#42b983] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
+        class="w-full py-2 px-4 text-sm font-medium text-[#4DB487] border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
       >
         {{ isCalculatingRoute ? 'Recalculando...' : 'Recalcular ruta' }}
       </button>
@@ -329,7 +329,7 @@ const getMissingDataMessage = (): string => {
 /* Scroll personalizado */
 .overflow-y-auto {
   scrollbar-width: thin;
-  scrollbar-color: #42b983 #f3f4f6;
+  scrollbar-color: #4DB487 #f3f4f6;
 }
 
 .overflow-y-auto::-webkit-scrollbar {
@@ -341,7 +341,7 @@ const getMissingDataMessage = (): string => {
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #42b983;
+  background: #4DB487;
   border-radius: 3px;
 }
 

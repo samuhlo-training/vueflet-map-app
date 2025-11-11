@@ -47,6 +47,16 @@
             badge="Destino"
             icon-type="destination"
           />
+
+          <!-- 🎨 RUTA: Línea que conecta origen y destino -->
+          <!-- Solo se muestra si hay una ruta calculada -->
+          <LPolyline
+            v-if="currentRoute"
+            :lat-lngs="currentRoute.geometry"
+            :color="routeColor"
+            :weight="7"
+            :opacity="0.8"
+          />
         </template>
       </l-map>
 </template>
@@ -55,12 +65,12 @@
 
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer, LPolyline } from "@vue-leaflet/vue-leaflet";
 import MarkerPopup from "./MarkerPopup.vue";
 import { useMapStore } from "../stores/map.store";
 import { usePlacesStore } from "../stores/places.store";
 import { useRoutingStore } from "../stores/routing.store";
-import {  ref, computed} from "vue";
+import {  ref, computed, watch } from "vue";
 
 // 🔧 Fix para los iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -83,6 +93,24 @@ const showSearchMarkers = computed(() => placesStore.showSearchMarkers);
 const originWaypoint = computed(() => routingStore.originWaypoint);
 const destinationWaypoint = computed(() => routingStore.destinationWaypoint);
 const isDirectionsMode = computed(() => routingStore.isDirectionsMode);
+
+// Ruta calculada
+const currentRoute = computed(() => routingStore.currentRoute);
+
+/**
+ * routeColor: Color de la línea de ruta según el modo de transporte
+ */
+const routeColor = computed(() => {
+  if (!currentRoute.value) return '#374C61'; // Default 
+  
+  const colors = {
+    driving: '#374C61',  // Gris verde Vue
+    cycling: '#F9CF30',  // Amarillo leaflet (Ucrania)
+    walking: '#146CD7',  // Azul leaflet ( Ucrania)
+  };
+  
+  return colors[currentRoute.value.travelMode];
+});
 
 /**
  * visibleSearchResults: Filtra los resultados de búsqueda según el modo
@@ -114,6 +142,43 @@ const onMapReady = () => {
     console.warn('Map instance not found', mapRef.value);
   }
 };
+
+/**
+ * fitRouteBounds: Ajusta el mapa para mostrar toda la ruta
+ * 
+ * Cuando se calcula una ruta, el mapa se ajusta automáticamente
+ * para que puedas ver todo el recorrido de un vistazo.
+ */
+const fitRouteBounds = () => {
+  if (!currentRoute.value || !mapRef.value?.leafletObject) return;
+  
+  const map = mapRef.value.leafletObject as L.Map;
+  
+  // Crear un "bounds" (rectángulo invisible) que contenga todas las coordenadas
+  const bounds = L.latLngBounds(currentRoute.value.geometry);
+  
+  // Ajustar el mapa para que muestre todo el bounds con un poco de padding
+  map.fitBounds(bounds, {
+    padding: [50, 50], // 50 píxeles de margen en todos los lados
+    maxZoom: 15,       // No hacer zoom demasiado cercano
+    animate: true,     // Animar la transición
+    duration: 1.0      // 1 segundo de animación
+  });
+  
+  console.log('🗺️ Mapa ajustado para mostrar la ruta completa');
+};
+
+/**
+ * Watch: Cuando se calcule una ruta, ajustar el mapa automáticamente
+ */
+watch(currentRoute, (newRoute) => {
+  if (newRoute) {
+    // Esperar un poquito para que la polyline se renderice
+    setTimeout(() => {
+      fitRouteBounds();
+    }, 100);
+  }
+});
 
 
 defineProps<{

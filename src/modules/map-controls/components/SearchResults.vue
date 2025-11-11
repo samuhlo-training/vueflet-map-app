@@ -5,7 +5,7 @@
       :key="place.id"
       class="border-b border-[#f3f4f6] px-4 py-3 transition-all duration-200"
       :class="{
-        'bg-[#d1fae5] border-[#42b983]': place.id === activePlace,
+        'bg-[#d1fae5] border-[#4DB487]': place.id === activePlace,
         'hover:bg-[#f0fdf4]': place.id !== activePlace
       }"
     >
@@ -23,7 +23,7 @@
         <!-- Botón: Cómo llegar -->
         <button 
           @click.stop="handleGetDirections(place.id)"
-          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#42b983] hover:bg-[#35a372] hover:shadow-lg"
+          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg"
           title="Calcular ruta hacia este lugar"
         >
           Cómo llegar
