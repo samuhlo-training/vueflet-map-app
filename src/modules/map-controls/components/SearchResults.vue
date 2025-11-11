@@ -26,17 +26,10 @@
           class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#42b983] hover:bg-[#35a372] hover:shadow-lg"
           title="Calcular ruta hacia este lugar"
         >
-          🚗 Cómo llegar
+          Cómo llegar
         </button>
 
-        <!-- Botón: Ver en mapa (solo si está activo) -->
-        <button 
-          v-if="place.id === activePlace"
-          class="px-3 py-1.5 text-xs font-medium text-[#42b983] border border-[#42b983] rounded transition-all duration-200 hover:bg-[#f0fdf4]"
-          title="Este lugar está seleccionado"
-        >
-          ✓ Seleccionado
-        </button>
+       
       </div>
     </li>
   </ul>

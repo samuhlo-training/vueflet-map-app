@@ -28,7 +28,7 @@
         :class="getButtonClasses(mode.value)"
         :title="mode.description"
       >
-        <span class="text-base">{{ mode.icon }}</span>
+        
         <span class="font-medium">{{ mode.label }}</span>
       </button>
     </div>
@@ -83,19 +83,18 @@ const modes = [
   {
     value: 'driving' as TravelMode,
     label: 'Coche',
-    icon: '🚗',
+
     description: 'Ruta en coche por carretera',
   },
   {
     value: 'cycling' as TravelMode,
     label: 'Bici',
-    icon: '🚴',
+
     description: 'Ruta en bicicleta por carriles y calles',
   },
   {
     value: 'walking' as TravelMode,
     label: 'Pie',
-    icon: '🚶',
     description: 'Ruta a pie por aceras y senderos',
   },
 ];

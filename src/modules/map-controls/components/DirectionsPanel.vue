@@ -108,7 +108,7 @@
         type="button"
         class="w-full py-2 px-4 text-sm font-medium text-[#42b983] border border-[#42b983] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
       >
-        {{ isCalculatingRoute ? '⏳ Recalculando...' : '🔄 Recalcular ruta' }}
+        {{ isCalculatingRoute ? 'Recalculando...' : 'Recalcular ruta' }}
       </button>
 
       <!-- Mensaje si faltan datos -->

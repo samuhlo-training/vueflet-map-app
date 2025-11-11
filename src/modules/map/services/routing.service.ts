@@ -21,17 +21,29 @@ import type {
 // ============================================
 
 /**
- * URLs base para cada modo de transporte en OSRM
+ * URL base de OSRM
  *
- * OSRM tiene servidores públicos gratuitos para cada modo:
- * - car: Para coches
- * - bike: Para bicicletas
- * - foot: Para caminar
+ * NOTA IMPORTANTE: El servidor público de OSRM solo proporciona routing
+ * para coches (car). Los servidores de bike y foot NO están disponibles
+ * públicamente debido a los altos requisitos de hardware (+128GB RAM).
+ *
+ * Solución: Usamos siempre la ruta de 'car' y calculamos los tiempos
+ * nosotros mismos según el modo de transporte usando velocidades promedio.
  */
-const OSRM_BASE_URLS: Record<TravelMode, string> = {
-  driving: "https://router.project-osrm.org/route/v1/car",
-  cycling: "https://router.project-osrm.org/route/v1/bike",
-  walking: "https://router.project-osrm.org/route/v1/foot",
+const OSRM_BASE_URL = "https://router.project-osrm.org/route/v1/car";
+
+/**
+ * Velocidades promedio para cada modo de transporte (km/h)
+ *
+ * Estas velocidades son estimaciones realistas:
+ * - Driving: Usamos el tiempo de OSRM (es preciso para coches)
+ * - Cycling: 15 km/h (velocidad promedio en bici urbana)
+ * - Walking: 5 km/h (velocidad promedio caminando)
+ */
+const AVERAGE_SPEEDS: Record<TravelMode, number> = {
+  driving: 0, // No se usa, tomamos el tiempo de OSRM
+  cycling: 15, // km/h
+  walking: 5, // km/h
 };
 
 // ============================================
@@ -185,14 +197,18 @@ class RoutingService {
    * buildOSRMUrl: Construye la URL para la API de OSRM
    *
    * @param waypoints - Array de waypoints
-   * @param travelMode - Modo de transporte
+   * @param _travelMode - Modo de transporte (no se usa, siempre usamos 'car')
    * @returns URL completa para hacer la petición
    *
    * Formato de la URL:
    * https://router.project-osrm.org/route/v1/car/lon1,lat1;lon2,lat2?...
+   *
+   * NOTA: Siempre usamos el servidor 'car' porque es el único disponible
+   * públicamente. Los tiempos se ajustarán después según el modo.
    */
-  private buildOSRMUrl(waypoints: Waypoint[], travelMode: TravelMode): string {
-    const baseUrl = OSRM_BASE_URLS[travelMode];
+  private buildOSRMUrl(waypoints: Waypoint[], _travelMode: TravelMode): string {
+    // Siempre usar el servidor 'car'
+    const baseUrl = OSRM_BASE_URL;
 
     // Convertir waypoints a formato "lon,lat;lon,lat;..."
     // ¡Importante! OSRM usa [longitud, latitud], pero nosotros usamos [lat, lon]
@@ -219,7 +235,9 @@ class RoutingService {
    * @param travelMode - Modo de transporte
    * @returns Ruta en nuestro formato
    *
-   * Esta función es el "traductor" entre el formato de OSRM y el nuestro
+   * Esta función es el "traductor" entre el formato de OSRM y el nuestro.
+   * IMPORTANTE: OSRM solo devuelve tiempos para 'car', así que para 'cycling'
+   * y 'walking' calculamos los tiempos manualmente usando velocidades promedio.
    */
   private transformOSRMRoute(
     osrmRoute: OSRMRoute,
@@ -234,9 +252,15 @@ class RoutingService {
     // Nosotros queremos todos los steps de todos los legs en un solo array
     osrmRoute.legs.forEach((leg) => {
       leg.steps.forEach((step) => {
+        // Para cycling y walking, recalculamos la duración basada en la distancia
+        const duration =
+          travelMode === "driving"
+            ? step.duration
+            : this.calculateDuration(step.distance, travelMode);
+
         segments.push({
           distance: step.distance,
-          duration: step.duration,
+          duration,
           instruction: this.buildInstruction(step),
           coordinates: this.convertCoordinates(step.geometry.coordinates),
           index: segmentIndex++,
@@ -248,11 +272,17 @@ class RoutingService {
     // Esta es la línea completa que vamos a dibujar en el mapa
     const geometry = this.convertCoordinates(osrmRoute.geometry.coordinates);
 
+    // Para cycling y walking, recalcular la duración total
+    const totalDuration =
+      travelMode === "driving"
+        ? osrmRoute.duration
+        : this.calculateDuration(osrmRoute.distance, travelMode);
+
     // Crear la ruta en nuestro formato
     const route: Route = {
       id: crypto.randomUUID(),
-      distance: osrmRoute.distance,
-      duration: osrmRoute.duration,
+      distance: osrmRoute.distance, // La distancia es la misma para todos los modos
+      duration: totalDuration, // Pero la duración varía según el modo
       segments,
       geometry,
       travelMode,
@@ -305,6 +335,31 @@ class RoutingService {
    */
   private convertCoordinates(coords: OSRMCoordinate[]): [number, number][] {
     return coords.map((coord) => [coord[1], coord[0]]); // [lat, lon]
+  }
+
+  /**
+   * calculateDuration: Calcula la duración de un trayecto según el modo de transporte
+   *
+   * @param distanceMeters - Distancia en metros
+   * @param travelMode - Modo de transporte
+   * @returns Duración estimada en segundos
+   *
+   * Para 'driving', usamos la duración de OSRM (pasada como distanceMeters por simplicidad).
+   * Para 'cycling' y 'walking', calculamos en base a velocidades promedio:
+   * - Bicicleta: 15 km/h
+   * - Andando: 5 km/h
+   *
+   * Fórmula: tiempo (segundos) = (distancia (km) / velocidad (km/h)) * 3600
+   */
+  private calculateDuration(
+    distanceMeters: number,
+    travelMode: TravelMode
+  ): number {
+    const distanceKm = distanceMeters / 1000;
+    const speedKmh = AVERAGE_SPEEDS[travelMode];
+    const durationHours = distanceKm / speedKmh;
+    const durationSeconds = durationHours * 3600;
+    return Math.round(durationSeconds);
   }
 
   /**

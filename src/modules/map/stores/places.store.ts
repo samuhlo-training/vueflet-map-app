@@ -10,6 +10,7 @@ export const usePlacesStore = defineStore("places", () => {
   const searchResults = ref<Place[]>([]);
   const isSearching = ref<boolean>(false);
   const activePlaceId = ref<number | null>(null);
+  const showSearchMarkers = ref<boolean>(true); // Controla si se muestran los marcadores de búsqueda
 
   // Getters - Propiedades computadas derivadas del estado
   const isUserLocationReady = computed<boolean>(() => {
@@ -73,6 +74,14 @@ export const usePlacesStore = defineStore("places", () => {
     activePlaceId.value = id;
   };
 
+  const hideSearchMarkers = () => {
+    showSearchMarkers.value = false;
+  };
+
+  const showSearchMarkersAgain = () => {
+    showSearchMarkers.value = true;
+  };
+
   return {
     // State
     isLoading,
@@ -80,11 +89,14 @@ export const usePlacesStore = defineStore("places", () => {
     searchResults,
     isSearching,
     activePlaceId,
+    showSearchMarkers,
     // Getters
     isUserLocationReady,
     // Actions
     getCurrentPosition,
     searchPlaces,
     setActivePlaceId,
+    hideSearchMarkers,
+    showSearchMarkersAgain,
   };
 });

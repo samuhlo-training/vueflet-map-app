@@ -20,7 +20,7 @@
       <div class="grid grid-cols-2 gap-3">
         <!-- Distancia -->
         <div class="flex items-center gap-2">
-          <span class="text-xl">📏</span>
+          <span class="text-xl"></span>
           <div>
             <p class="text-xs text-[#6b7280]">Distancia</p>
             <p class="text-lg font-bold text-[#1f2937]">{{ formattedDistance }}</p>
@@ -29,7 +29,7 @@
         
         <!-- Duración -->
         <div class="flex items-center gap-2">
-          <span class="text-xl">⏱️</span>
+          <span class="text-xl"></span>
           <div>
             <p class="text-xs text-[#6b7280]">Tiempo</p>
             <p class="text-lg font-bold text-[#1f2937]">{{ formattedDuration }}</p>
@@ -81,8 +81,8 @@
                 {{ segment.instruction }}
               </p>
               <div class="flex items-center gap-3 text-xs text-[#6b7280]">
-                <span>📏 {{ formatDistance(segment.distance) }}</span>
-                <span>⏱️ {{ formatDuration(segment.duration) }}</span>
+                <span> {{ formatDistance(segment.distance) }}</span>
+                <span> {{ formatDuration(segment.duration) }}</span>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@
     <!-- Información adicional -->
     <div class="text-xs text-[#6b7280] px-2">
       <p>
-        💡 La ruta se calculó el {{ formatCalculatedAt() }}
+        La ruta se calculó {{ formatCalculatedAt() }}
       </p>
     </div>
   </div>
@@ -187,9 +187,9 @@ const getTravelModeText = (): string => {
   if (!props.route) return '';
   
   const modeTexts = {
-    driving: '🚗 En coche',
-    cycling: '🚴 En bicicleta',
-    walking: '🚶 A pie',
+    driving: 'En coche',
+    cycling: 'En bicicleta',
+    walking: 'A pie',
   };
   
   return modeTexts[props.route.travelMode] || '';

@@ -21,6 +21,7 @@ import type {
   RoutingError,
 } from "../interfaces/routing.interfaces";
 import { routingService } from "../services/routing.service";
+import { usePlacesStore } from "./places.store";
 
 export const useRoutingStore = defineStore("routing", () => {
   // ============================================
@@ -163,20 +164,28 @@ export const useRoutingStore = defineStore("routing", () => {
   /**
    * setDirectionsMode: Cambia al modo de direcciones
    *
-   * Esto hace que se muestre el DirectionsPanel en lugar del SearchBar
+   * Esto hace que se muestre el DirectionsPanel en lugar del SearchBar.
+   * También oculta los marcadores de búsqueda.
    */
   const setDirectionsMode = () => {
     uiMode.value = "directions";
+    // Ocultar marcadores de búsqueda cuando entramos en modo direcciones
+    const placesStore = usePlacesStore();
+    placesStore.hideSearchMarkers();
   };
 
   /**
    * setSearchMode: Vuelve al modo de búsqueda
    *
-   * También limpia todos los waypoints y la ruta
+   * También limpia todos los waypoints y la ruta, y vuelve a mostrar
+   * los marcadores de búsqueda.
    */
   const setSearchMode = () => {
     uiMode.value = "search";
     clearRoute();
+    // Volver a mostrar los marcadores de búsqueda
+    const placesStore = usePlacesStore();
+    placesStore.showSearchMarkersAgain();
   };
 
   /**
