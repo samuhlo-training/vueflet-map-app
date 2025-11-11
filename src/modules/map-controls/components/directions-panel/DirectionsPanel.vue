@@ -183,10 +183,7 @@ const localTravelMode = computed({
   get: () => routingStore.travelMode,
   set: (value) => {
     routingStore.setTravelMode(value);
-    // Si ya hay ruta, recalcular solo los tiempos (sin llamar a la API)
-    if (routingStore.hasRoute) {
-      routingStore.recalculateRouteTimes(value);
-    }
+  
   },
 });
 
@@ -260,10 +257,6 @@ const handleDestinationSelected = (place: Place) => {
   const [lat, lon] = place.coordinates;
   routingStore.setDestination(place.name, [lat, lon], place.id);
   
-  // Si ya hay origen, calcular ruta automáticamente
-  if (originWaypoint.value) {
-    routingStore.calculateRoute();
-  }
 };
 
 /**
@@ -275,10 +268,7 @@ const handleOriginMyLocation = () => {
     routingStore.setOrigin('Mi ubicación', [lat, lon]);
     originName.value = 'Mi ubicación';
     
-    // Si ya hay destino, calcular ruta automáticamente
-    if (destinationWaypoint.value) {
-      routingStore.calculateRoute();
-    }
+    
   } else {
     alert('No se pudo obtener tu ubicación. Asegúrate de dar permisos de ubicación.');
   }
@@ -292,10 +282,7 @@ const handleSwapOriginDestination = () => {
   
   routingStore.swapOriginDestination();
   
-  // Si ya hay ruta, recalcular
-  if (hasRoute.value) {
-    routingStore.calculateRoute();
-  }
+ 
 };
 
 /**

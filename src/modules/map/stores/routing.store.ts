@@ -205,6 +205,10 @@ export const useRoutingStore = defineStore("routing", () => {
   const setTravelMode = (mode: TravelMode) => {
     travelMode.value = mode;
     // TODO: Recalcular ruta automáticamente si hay waypoints
+    // Si ya hay ruta, recalcular solo los tiempos (sin llamar a la API)
+    if (hasRoute) {
+      recalculateRouteTimes(mode);
+    }
   };
 
   /**
@@ -281,6 +285,10 @@ export const useRoutingStore = defineStore("routing", () => {
         placeId,
       });
     }
+    // Si ya hay destino, calcular ruta automáticamente
+    if (destinationWaypoint.value) {
+      calculateRoute();
+    }
   };
 
   /**
@@ -315,6 +323,11 @@ export const useRoutingStore = defineStore("routing", () => {
         order: maxOrder + 1,
         placeId,
       });
+    }
+
+    // Si ya hay origen, calcular ruta automáticamente
+    if (originWaypoint.value) {
+      calculateRoute();
     }
   };
 
@@ -371,6 +384,11 @@ export const useRoutingStore = defineStore("routing", () => {
 
     // Reordenar
     waypoints.value.sort((a, b) => a.order - b.order);
+
+    // Si ya hay ruta, recalcular
+    if (hasRoute.value) {
+      calculateRoute();
+    }
   };
 
   /**
@@ -667,6 +685,6 @@ export const useRoutingStore = defineStore("routing", () => {
     clearRoutingError,
     calculateRoute,
     recalculateRouteTimes,
-    selectAlternativeRoute, // 🆕 Seleccionar una ruta alternativa
+    selectAlternativeRoute, // Seleccionar una ruta alternativa
   };
 });
