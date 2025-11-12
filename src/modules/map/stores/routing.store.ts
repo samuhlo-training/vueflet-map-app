@@ -408,6 +408,7 @@ export const useRoutingStore = defineStore("routing", () => {
   const clearRoute = () => {
     waypoints.value = [];
     currentRoute.value = null;
+    alternativeRoutes.value.splice(0); // Limpiar array de manera reactiva
     routingError.value = null;
   };
 
