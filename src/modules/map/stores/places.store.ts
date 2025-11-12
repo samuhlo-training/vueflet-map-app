@@ -31,6 +31,12 @@ export const usePlacesStore = defineStore("places", () => {
   const userLocation = ref<UserLocation>(undefined);
 
   /**
+   * locationError: Tipo de error al obtener la ubicación
+   * null si no hay error, o código de error de geolocalización
+   */
+  const locationError = ref<number | null>(null);
+
+  /**
    * searchResults: Resultados de la búsqueda de lugares
    * Array vacío cuando no hay resultados
    */
@@ -85,10 +91,12 @@ export const usePlacesStore = defineStore("places", () => {
           const location: UserLocation = [coords.latitude, coords.longitude];
           userLocation.value = location;
           isLoading.value = false;
+          locationError.value = null;
           resolve(location);
         },
         (err) => {
           isLoading.value = false;
+          locationError.value = err.code;
           console.error("Error obteniendo ubicación:", err);
           reject(err);
         }
@@ -165,6 +173,7 @@ export const usePlacesStore = defineStore("places", () => {
     // State
     isLoading,
     userLocation,
+    locationError,
     searchResults,
     isSearching,
     activePlaceId,

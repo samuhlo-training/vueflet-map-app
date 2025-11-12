@@ -17,16 +17,17 @@
     <Map v-else-if="userLocation" :userLocation="userLocation" class="w-full h-full" />
    
     <!-- Mostrar error si no se puede obtener la ubicación -->
-    <LocationError v-else @retry="handleRetry" />
+    <LocationError v-else :errorCode="locationError" @retry="handleRetry" />
 
-      <!-- Zona Botones Derecha-->
-     <div class="absolute top-3 right-4 z-999">
-       <MyLocationButton />
-     </div>
-      <!-- Zona Barra de Búsqueda Izquierda-->
-      <div class="absolute top-3 left-4">
-        <SearchBar />
-      </div>
+    <!-- Zona Botones Derecha - Siempre visible cuando hay ubicación -->
+    <div v-if="userLocation" class="absolute top-3 right-4 z-999">
+      <MyLocationButton />
+    </div>
+    
+    <!-- Zona Barra de Búsqueda Izquierda - Siempre visible cuando hay ubicación -->
+    <div v-if="userLocation" class="absolute top-3 left-4">
+      <SearchBar />
+    </div>
   </div>
 </template>
 
@@ -45,7 +46,7 @@ import SearchBar from '@/modules/map-controls/components/search-panel/SearchBar.
 const placesStore = usePlacesStore()
 
 // Extraer los estados (variables reactivas) directamente del store
-const { isLoading, userLocation } = storeToRefs(placesStore)
+const { isLoading, userLocation, locationError } = storeToRefs(placesStore)
 
 
 const { getCurrentPosition } = placesStore
