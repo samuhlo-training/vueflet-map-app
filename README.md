@@ -1,4 +1,6 @@
-# 🗺️ MapApp - Proyecto de Aprendizaje Vue.js
+# MapApp - Proyecto de Aprendizaje Vue.js
+
+
 
 [![Vue](https://img.shields.io/badge/Vue-3.5.22-4FC08D?style=for-the-badge&logo=vue.js)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -8,20 +10,24 @@
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=for-the-badge&logo=leaflet)](https://leafletjs.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-16+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 
+![Vista previa de MapApp - Aplicación de mapas con búsqueda y rutas](assets/images/map-app-preview.webp)
+
 > **Proyecto educativo** para consolidar conocimientos en Vue 3, Pinia y desarrollo de aplicaciones web modernas.
+
+
 
 ## 📋 Sobre el Proyecto
 
 Esta aplicación de mapas es un **proyecto de aprendizaje personal**. El objetivo principal es **practicar y asentar conceptos fundamentales** de Vue 3 y Pinia, aplicándolos en un proyecto real y funcional.
 
 ### 🎯 Objetivos de Aprendizaje
-- ✅ Dominar la Composition API de Vue 3
-- ✅ Gestionar estado global con Pinia
-- ✅ Integrar mapas interactivos con Leaflet
-- ✅ Consumir APIs externas (Nominatim, OSRM)
-- ✅ Implementar TypeScript en Vue
-- ✅ Crear componentes reutilizables
-- ✅ Manejar navegación y routing
+-  Dominar la Composition API de Vue 3
+- Gestionar estado global con Pinia
+- Integrar mapas interactivos con Leaflet
+-  Consumir APIs externas (Nominatim, OSRM)
+-  Implementar TypeScript en Vue
+-  Crear componentes reutilizables
+-  Manejar navegación y routing
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -44,20 +50,20 @@ Esta aplicación de mapas es un **proyecto de aprendizaje personal**. El objetiv
 
 ## ✨ Características
 
-### 🗺️ Funcionalidades del Mapa
+###  Funcionalidades del Mapa
 - **Ubicación actual** del usuario con geolocalización
 - **Búsqueda de lugares** en tiempo real
 - **Cálculo de rutas** entre dos puntos
 - **Múltiples modos de transporte** (coche, bici, caminar)
 - **Marcadores interactivos** con información detallada
 
-### 🎨 Interfaz de Usuario
+###  Interfaz de Usuario
 - **Modo búsqueda** y **modo direcciones**
 - **Componentes reutilizables** y modulares
 - **Animaciones suaves** y transiciones
 - **Accesibilidad** con roles ARIA
 
-### 🏗️ Arquitectura
+###  Arquitectura
 - **Estructura modular** por funcionalidades
 - **Stores organizados** con Pinia
 - **Interfaces TypeScript** bien tipadas
@@ -131,4 +137,4 @@ Este proyecto refleja mi **progreso en el aprendizaje de Vue.js**. Cada commit r
 
 ---
 
-**Hecho con ❤️ durante mi viaje con Vue.js**
+**Hecho durante mi viaje con Vue.js**
