@@ -22,7 +22,7 @@
           <span>←</span>
           <span>Volver</span>
         </button>
-        <h3 class="font-bold text-gray-dark text-lg">
+        <h3 class="font-bold text-gray-darker text-lg">
           Direcciones
         </h3>
         <div class="w-16"></div> <!-- Spacer para centrar título -->
@@ -58,8 +58,8 @@
             type="button"
             class="p-2 rounded-full transition-all duration-200 transform hover:scale-110 cursor-pointer"
             :class="canSwap 
-              ? 'bg-gray-border text-primary hover:bg-gray-light' 
-              : 'bg-gray-ultra-light text-gray-disabled cursor-not-allowed'"
+              ? 'bg-gray-light text-primary hover:bg-gray-ultra-light' 
+              : 'bg-gray-ultra-light text-gray-medium cursor-not-allowed'"
             title="Intercambiar origen y destino"
           >
             <span class="text-lg">⇅</span>
@@ -81,7 +81,7 @@
       <!-- <button
         @click="handleAddWaypoint"
         type="button"
-        class="w-full py-2 px-3 text-sm font-medium text-primary border border-dashed border-primary rounded-lg hover:bg-green-light transition-all duration-200"
+        class="w-full py-2 px-3 text-sm font-medium text-primary border border-dashed border-primary rounded-lg hover:bg-success-bg transition-all duration-200"
       >
         + Añadir parada
       </button> -->
@@ -95,7 +95,7 @@
         class="w-full py-3 px-4 text-sm font-bold text-white rounded-lg transition-all duration-200 shadow-md"
         :class="isCalculatingRoute
           ? 'bg-gray-disabled cursor-not-allowed'
-          : 'bg-primary hover:bg-primary-hover hover:shadow-lg transform hover:scale-105 cursor-pointer'"
+          : 'bg-primary hover:bg-gray-darker hover:shadow-lg transform hover:scale-105 cursor-pointer'"
       >
         {{ isCalculatingRoute ? '⏳ Calculando ruta...' : '🗺️ Calcular ruta' }}
       </button>
@@ -106,7 +106,7 @@
         @click="handleCalculateRoute"
         :disabled="isCalculatingRoute"
         type="button"
-        class="w-full py-2 px-4 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-green-light transition-all duration-200 cursor-pointer"
+        class="w-full py-2 px-4 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-success-bg transition-all duration-200 cursor-pointer"
       >
         {{ isCalculatingRoute ? 'Recalculando...' : 'Recalcular ruta' }}
       </button>
@@ -114,9 +114,9 @@
       <!-- Mensaje si faltan datos -->
       <div
         v-if="!canCalculateRoute && !hasRoute"
-        class="p-3 bg-amber-light border border-amber-border rounded-lg"
+        class="p-3 bg-warning-bg border border-warning rounded-lg"
       >
-        <p class="text-xs text-amber-dark">
+        <p class="text-xs text-warning-dark">
           ⚠️ {{ getMissingDataMessage() }}
         </p>
       </div>
@@ -134,12 +134,12 @@
       <!-- Error -->
       <div
         v-if="routingError"
-        class="p-3 bg-red-light border border-red-error rounded-lg"
+        class="p-3 bg-error-bg border border-error rounded-lg"
       >
-        <p class="text-xs font-semibold text-red-dark mb-1">
+        <p class="text-xs font-semibold text-error-dark mb-1">
           ❌ Error al calcular la ruta
         </p>
-        <p class="text-xs text-red-dark">
+        <p class="text-xs text-error-dark">
           {{ routingError.message }}
         </p>
       </div>
@@ -338,7 +338,7 @@ const getMissingDataMessage = (): string => {
 /* Scroll personalizado */
 .overflow-y-auto {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-gray-border);
+  scrollbar-color: var(--color-primary) var(--color-gray-light);
 }
 
 .overflow-y-auto::-webkit-scrollbar {
@@ -346,7 +346,7 @@ const getMissingDataMessage = (): string => {
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: var(--color-gray-border);
+  background: var(--color-gray-light);
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {

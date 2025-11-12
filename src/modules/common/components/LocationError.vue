@@ -15,7 +15,7 @@
       <div class="mb-4 text-center">
         <svg
           class="w-16 h-16 mx-auto"
-          :class="isPermissionDenied ? 'text-amber-warning' : 'text-red-error'"
+          :class="isPermissionDenied ? 'text-warning' : 'text-red-error'"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -37,7 +37,7 @@
       </div>
 
       <!-- Título -->
-      <h2 class="text-lg font-semibold text-gray-dark text-center mb-2">
+      <h2 class="text-lg font-semibold text-gray-darker text-center mb-2">
         {{ errorTitle }}
       </h2>
 
@@ -50,15 +50,15 @@
       <button
         v-if="!isPermissionDenied"
         @click="$emit('retry')"
-        class="w-full px-4 py-2.5 text-sm font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-primary-hover hover:shadow-lg cursor-pointer"
+        class="w-full px-4 py-2.5 text-sm font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-gray-darker hover:shadow-lg cursor-pointer"
       >
         Volver a intentar
       </button>
 
       <!-- Información adicional -->
       <div class="mt-4 p-3 rounded-lg border"
-           :class="isPermissionDenied ? 'bg-amber-light border-amber-border' : 'bg-green-light border-green-border'">
-        <p class="text-xs font-semibold text-gray-dark mb-2">
+           :class="isPermissionDenied ? 'bg-warning-bg border-warning-border' : 'bg-success-bg border-success-border'">
+        <p class="text-xs font-semibold text-gray-darker mb-2">
           {{ isPermissionDenied ? '🔒 Permiso denegado:' : '💡 Consejos:' }}
         </p>
         <ul class="text-xs text-gray-medium space-y-1">

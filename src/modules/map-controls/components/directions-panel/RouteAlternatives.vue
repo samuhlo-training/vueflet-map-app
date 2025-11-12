@@ -11,7 +11,7 @@
 <template>
   <div v-if="hasAlternatives" class="space-y-2">
     <!-- Título -->
-    <h4 class="text-sm font-semibold text-gray-dark px-1">
+    <h4 class="text-sm font-semibold text-gray-darker px-1">
       Rutas disponibles
     </h4>
 
@@ -23,15 +23,15 @@
         @click="handleSelectRoute(routeInfo.index)"
         class="relative p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer"
         :class="routeInfo.route.isSelected 
-          ? 'border-vue bg-green-light' 
-          : 'border-gray-light bg-white hover:border-vue hover:bg-gray-ultra-light cursor-pointer'"
+          ? 'border-primary bg-success-bg' 
+          : 'border-gray-light bg-white hover:border-primary hover:bg-gray-ultra-light cursor-pointer'"
       >
         <!-- Badge superior -->
         <div class="flex items-start justify-between mb-2">
           <span 
             class="text-xs font-bold px-2 py-1 rounded-full"
             :class="routeInfo.route.isSelected 
-              ? 'bg-vue text-white' 
+              ? 'bg-primary text-white' 
               : 'bg-gray-light text-gray-medium'"
           >
             <template v-if="routeInfo.isFastest">
@@ -45,7 +45,7 @@
             </template>
           </span>
           <!-- Checkmark si está seleccionada -->
-          <span v-if="routeInfo.route.isSelected" class="text-vue text-lg">✓</span>
+          <span v-if="routeInfo.route.isSelected" class="text-primary text-lg">✓</span>
         </div>
 
         <!-- Información de la ruta -->
@@ -53,7 +53,7 @@
           <div class="flex items-center gap-2 ml-1">
            
             <div>
-              <p class="text-sm font-bold text-gray-dark">
+              <p class="text-sm font-bold text-gray-darker">
                 {{ formatDuration(routeInfo.route.duration) }}
               </p>
               <p class="text-xs text-gray-medium">

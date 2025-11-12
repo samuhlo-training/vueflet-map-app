@@ -43,7 +43,7 @@
               v-if="type === 'origin' && showMyLocationButton"
               @click="handleMyLocation"
               type="button"
-              class="p-1 text-xs text-primary hover:bg-green-light rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-primary hover:bg-success-bg rounded transition-all duration-200 cursor-pointer"
               title="Usar mi ubicación"
             >
               📍
@@ -54,7 +54,7 @@
               v-if="type === 'waypoint' && showRemoveButton"
               @click="handleRemove"
               type="button"
-              class="p-1 text-xs text-red-error hover:bg-red-light rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-red-error hover:bg-error-bg rounded transition-all duration-200 cursor-pointer"
               title="Eliminar parada"
             >
               ✕
@@ -65,7 +65,7 @@
               v-if="searchQuery"
               @click="handleClear"
               type="button"
-              class="p-1 text-xs text-gray-medium hover:bg-gray-border rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-gray-medium hover:bg-gray-ultra-light rounded transition-all duration-200 cursor-pointer"
               title="Limpiar"
             >
               ⌫
@@ -83,9 +83,9 @@
             :key="place.id"
             @click="handleSelectPlace(place)"
             type="button"
-            class="w-full text-left px-3 py-2 hover:bg-green-light transition-all duration-200 border-b border-gray-border last:border-b-0 cursor-pointer"
+            class="w-full text-left px-3 py-2 hover:bg-success-bg transition-all duration-200 border-b border-gray-light last:border-b-0 cursor-pointer"
           >
-            <p class="text-sm font-medium text-gray-dark truncate">
+            <p class="text-sm font-medium text-gray-darker truncate">
               {{ place.name }}
             </p>
             <p class="text-xs text-gray-medium truncate">
@@ -322,7 +322,7 @@ const getInputClasses = (): string => {
     case 'destination':
       return `${baseClasses} focus:border-red-error focus:ring-red-error/20`;
     case 'waypoint':
-      return `${baseClasses} focus:border-gray-medium focus:ring-gray-medium/20`;
+      return `${baseClasses} focus:border-gray-darker focus:ring-gray-darker/20`;
     default:
       return baseClasses;
   }

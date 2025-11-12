@@ -14,10 +14,10 @@
     <li
       v-for="place in results"
       :key="place.id"
-      class="border-b border-gray-border px-4 py-3 transition-all duration-200"
+      class="border-b border-gray-light px-4 py-3 transition-all duration-200"
       :class="{
-        'bg-green-border border-primary': place.id === activePlace,
-        'hover:bg-green-light': place.id !== activePlace
+        'bg-success-bg border-primary': place.id === activePlace,
+        'hover:bg-success-bg': place.id !== activePlace
       }"
     >
       <!-- Información del lugar - clickeable -->
@@ -25,7 +25,7 @@
         @click="onPlaceClick(place.id)"
         class="cursor-pointer"
       >
-        <h5 class="font-semibold text-gray-dark text-sm mb-1">{{ place.name }}</h5>
+        <h5 class="font-semibold text-gray-darker text-sm mb-1">{{ place.name }}</h5>
         <p class="text-gray-medium text-xs mb-3">{{ place.display_name }}</p>
       </div>
 
@@ -34,7 +34,7 @@
         <!-- Botón: Cómo llegar -->
         <button 
           @click.stop="handleGetDirections(place.id)"
-          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-primary-darker hover:shadow-lg cursor-pointer"
+          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-gray-darker hover:shadow-lg cursor-pointer"
           title="Calcular ruta hacia este lugar"
         >
           Cómo llegar

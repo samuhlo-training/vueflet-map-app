@@ -12,7 +12,7 @@
 <template>
   <div v-if="route" class="space-y-3">
     <!-- Resumen de la ruta -->
-    <div class="bg-green-light border border-primary rounded-lg p-4">
+    <div class="bg-success-bg border border-primary rounded-lg p-4">
       <h4 class="text-xs font-medium text-gray-medium mb-3">
         Ruta calculada
       </h4>
@@ -23,7 +23,7 @@
           <span class="text-xl"></span>
           <div>
             <p class="text-xs text-gray-medium">Distancia</p>
-            <p class="text-lg font-bold text-gray-dark">{{ formattedDistance }}</p>
+            <p class="text-lg font-bold text-gray-darker">{{ formattedDistance }}</p>
           </div>
         </div>
         
@@ -32,13 +32,13 @@
           <span class="text-xl"></span>
           <div>
             <p class="text-xs text-gray-medium">Tiempo</p>
-            <p class="text-lg font-bold text-gray-dark">{{ formattedDuration }}</p>
+            <p class="text-lg font-bold text-gray-darker">{{ formattedDuration }}</p>
           </div>
         </div>
       </div>
 
       <!-- Modo de transporte -->
-      <div class="mt-3 pt-3 border-t border-green-border">
+      <div class="mt-3 pt-3 border-t border-success-bg">
         <p class="text-xs text-gray-medium">
           {{ travelModeText }}
         </p>
@@ -50,7 +50,7 @@
       v-if="showInstructionsToggle"
       @click="toggleInstructions"
       type="button"
-      class="w-full py-2 px-3 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-green-light transition-all duration-200 flex items-center justify-between cursor-pointer"
+      class="w-full py-2 px-3 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-success-bg transition-all duration-200 flex items-center justify-between cursor-pointer"
     >
       <span>{{ instructionsExpanded ? 'Ocultar' : 'Ver' }} instrucciones</span>
       <span class="transform transition-transform duration-200" :class="{ 'rotate-180': instructionsExpanded }">
@@ -67,7 +67,7 @@
         <div
           v-for="(segment, index) in route.segments"
           :key="`${route.id}-segment-${index}`"
-          class="px-4 py-3 border-b border-gray-border last:border-b-0 hover:bg-gray-ultra-light transition-all duration-200"
+          class="px-4 py-3 border-b border-gray-light last:border-b-0 hover:bg-gray-ultra-light transition-all duration-200"
         >
           <div class="flex items-start gap-3">
             <!-- Número del paso -->
@@ -77,7 +77,7 @@
             
             <!-- Instrucción -->
             <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-dark mb-1">
+              <p class="text-sm text-gray-darker mb-1">
                 {{ segment.instruction }}
               </p>
               <div class="flex items-center gap-3 text-xs text-gray-medium">
@@ -194,7 +194,7 @@ const toggleInstructions = () => {
 /* Animación suave para el despliegue de instrucciones */
 .max-h-64 {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-gray-border);
+  scrollbar-color: var(--color-primary) var(--color-gray-light);
 }
 
 .max-h-64::-webkit-scrollbar {
@@ -202,7 +202,7 @@ const toggleInstructions = () => {
 }
 
 .max-h-64::-webkit-scrollbar-track {
-  background: var(--color-gray-border);
+  background: var(--color-gray-light);
 }
 
 .max-h-64::-webkit-scrollbar-thumb {
