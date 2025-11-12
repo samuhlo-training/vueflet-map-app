@@ -14,7 +14,7 @@
     <input 
       type="text" 
       placeholder="Buscar lugares..." 
-      class="border border-[#4DB487] p-2 rounded w-full focus:border-[#374C61] outline-none transition-all duration-200"
+      class="border border-primary p-2 rounded w-full focus:border-gray-darker outline-none transition-all duration-200"
       @input="handleSearchInput"
     />
     

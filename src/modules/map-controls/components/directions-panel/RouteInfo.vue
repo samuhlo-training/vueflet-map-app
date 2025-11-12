@@ -12,8 +12,8 @@
 <template>
   <div v-if="route" class="space-y-3">
     <!-- Resumen de la ruta -->
-    <div class="bg-[#f0fdf4] border border-[#4DB487] rounded-lg p-4">
-      <h4 class="text-xs font-medium text-[#6b7280] mb-3">
+    <div class="bg-green-light border border-primary rounded-lg p-4">
+      <h4 class="text-xs font-medium text-gray-medium mb-3">
         Ruta calculada
       </h4>
       
@@ -22,8 +22,8 @@
         <div class="flex items-center gap-2">
           <span class="text-xl"></span>
           <div>
-            <p class="text-xs text-[#6b7280]">Distancia</p>
-            <p class="text-lg font-bold text-[#1f2937]">{{ formattedDistance }}</p>
+            <p class="text-xs text-gray-medium">Distancia</p>
+            <p class="text-lg font-bold text-gray-dark">{{ formattedDistance }}</p>
           </div>
         </div>
         
@@ -31,15 +31,15 @@
         <div class="flex items-center gap-2">
           <span class="text-xl"></span>
           <div>
-            <p class="text-xs text-[#6b7280]">Tiempo</p>
-            <p class="text-lg font-bold text-[#1f2937]">{{ formattedDuration }}</p>
+            <p class="text-xs text-gray-medium">Tiempo</p>
+            <p class="text-lg font-bold text-gray-dark">{{ formattedDuration }}</p>
           </div>
         </div>
       </div>
 
       <!-- Modo de transporte -->
-      <div class="mt-3 pt-3 border-t border-[#d1fae5]">
-        <p class="text-xs text-[#6b7280]">
+      <div class="mt-3 pt-3 border-t border-green-border">
+        <p class="text-xs text-gray-medium">
           {{ travelModeText }}
         </p>
       </div>
@@ -50,7 +50,7 @@
       v-if="showInstructionsToggle"
       @click="toggleInstructions"
       type="button"
-      class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] bg-white border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 flex items-center justify-between cursor-pointer"
+      class="w-full py-2 px-3 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-green-light transition-all duration-200 flex items-center justify-between cursor-pointer"
     >
       <span>{{ instructionsExpanded ? 'Ocultar' : 'Ver' }} instrucciones</span>
       <span class="transform transition-transform duration-200" :class="{ 'rotate-180': instructionsExpanded }">
@@ -61,26 +61,26 @@
     <!-- Instrucciones detalladas (plegable) -->
     <div
       v-if="instructionsExpanded && route.segments.length > 0"
-      class="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden"
+      class="bg-white border border-gray-light rounded-lg overflow-hidden"
     >
       <div class="max-h-64 overflow-y-auto">
         <div
           v-for="(segment, index) in route.segments"
           :key="`${route.id}-segment-${index}`"
-          class="px-4 py-3 border-b border-[#f3f4f6] last:border-b-0 hover:bg-[#f9fafb] transition-all duration-200"
+          class="px-4 py-3 border-b border-gray-border last:border-b-0 hover:bg-gray-ultra-light transition-all duration-200"
         >
           <div class="flex items-start gap-3">
             <!-- Número del paso -->
-            <div class="shrink-0 w-6 h-6 rounded-full bg-[#4DB487] text-white text-xs font-bold flex items-center justify-center mt-0.5">
+            <div class="shrink-0 w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center mt-0.5">
               {{ index + 1 }}
             </div>
             
             <!-- Instrucción -->
             <div class="flex-1 min-w-0">
-              <p class="text-sm text-[#1f2937] mb-1">
+              <p class="text-sm text-gray-dark mb-1">
                 {{ segment.instruction }}
               </p>
-              <div class="flex items-center gap-3 text-xs text-[#6b7280]">
+              <div class="flex items-center gap-3 text-xs text-gray-medium">
                 <span> {{ formatDistance(segment.distance) }}</span>
                 <span> {{ formatDuration(segment.duration) }}</span>
               </div>
@@ -91,7 +91,7 @@
     </div>
 
     <!-- Información adicional -->
-    <div class="text-xs text-[#6b7280] px-2">
+    <div class="text-xs text-gray-medium px-2">
       <p>
         La ruta se calculó {{ calculatedAtText }}
       </p>
@@ -100,7 +100,7 @@
 
   <!-- Mensaje si no hay ruta -->
   <div v-else class="text-center py-8">
-    <p class="text-sm text-[#6b7280]">
+    <p class="text-sm text-gray-medium">
       No hay ruta calculada
     </p>
   </div>
@@ -194,7 +194,7 @@ const toggleInstructions = () => {
 /* Animación suave para el despliegue de instrucciones */
 .max-h-64 {
   scrollbar-width: thin;
-  scrollbar-color: #4DB487 #f3f4f6;
+  scrollbar-color: var(--color-primary) var(--color-gray-border);
 }
 
 .max-h-64::-webkit-scrollbar {
@@ -202,15 +202,15 @@ const toggleInstructions = () => {
 }
 
 .max-h-64::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: var(--color-gray-border);
 }
 
 .max-h-64::-webkit-scrollbar-thumb {
-  background: #4DB487;
+  background: var(--color-primary);
   border-radius: 3px;
 }
 
 .max-h-64::-webkit-scrollbar-thumb:hover {
-  background: #35a372;
+  background: var(--color-primary-hover);
 }
 </style>

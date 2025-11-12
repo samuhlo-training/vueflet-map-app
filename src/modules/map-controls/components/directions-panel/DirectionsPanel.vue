@@ -13,16 +13,16 @@
 <template>
   <div class="z-999 absolute bg-white rounded-lg shadow-lg w-80 max-h-[90vh] overflow-y-auto">
     <!-- Header -->
-    <div class="sticky top-0 bg-white border-b border-[#e5e7eb] px-4 py-3 z-10">
+    <div class="sticky top-0 bg-white border-b border-gray-light px-4 py-3 z-10">
       <div class="flex items-center justify-between">
         <button
           @click="handleBackToSearch"
-          class="text-[#4DB487] hover:text-[#35a372] font-medium text-sm transition-all duration-200 flex items-center gap-1"
+          class="text-primary hover:text-primary-hover font-medium text-sm transition-all duration-200 flex items-center gap-1"
         >
           <span>←</span>
           <span>Volver</span>
         </button>
-        <h3 class="font-bold text-[#1f2937] text-lg">
+        <h3 class="font-bold text-gray-dark text-lg">
           Direcciones
         </h3>
         <div class="w-16"></div> <!-- Spacer para centrar título -->
@@ -58,8 +58,8 @@
             type="button"
             class="p-2 rounded-full transition-all duration-200 transform hover:scale-110 cursor-pointer"
             :class="canSwap 
-              ? 'bg-[#f3f4f6] text-[#4DB487] hover:bg-[#e5e7eb]' 
-              : 'bg-[#f9fafb] text-[#9ca3af] cursor-not-allowed'"
+              ? 'bg-gray-border text-primary hover:bg-gray-light' 
+              : 'bg-gray-ultra-light text-gray-disabled cursor-not-allowed'"
             title="Intercambiar origen y destino"
           >
             <span class="text-lg">⇅</span>
@@ -81,7 +81,7 @@
       <!-- <button
         @click="handleAddWaypoint"
         type="button"
-        class="w-full py-2 px-3 text-sm font-medium text-[#4DB487] border border-dashed border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200"
+        class="w-full py-2 px-3 text-sm font-medium text-primary border border-dashed border-primary rounded-lg hover:bg-green-light transition-all duration-200"
       >
         + Añadir parada
       </button> -->
@@ -94,8 +94,8 @@
         type="button"
         class="w-full py-3 px-4 text-sm font-bold text-white rounded-lg transition-all duration-200 shadow-md"
         :class="isCalculatingRoute
-          ? 'bg-[#9ca3af] cursor-not-allowed'
-          : 'bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg transform hover:scale-105 cursor-pointer'"
+          ? 'bg-gray-disabled cursor-not-allowed'
+          : 'bg-primary hover:bg-primary-hover hover:shadow-lg transform hover:scale-105 cursor-pointer'"
       >
         {{ isCalculatingRoute ? '⏳ Calculando ruta...' : '🗺️ Calcular ruta' }}
       </button>
@@ -106,7 +106,7 @@
         @click="handleCalculateRoute"
         :disabled="isCalculatingRoute"
         type="button"
-        class="w-full py-2 px-4 text-sm font-medium text-[#4DB487] border border-[#4DB487] rounded-lg hover:bg-[#f0fdf4] transition-all duration-200 cursor-pointer"
+        class="w-full py-2 px-4 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-green-light transition-all duration-200 cursor-pointer"
       >
         {{ isCalculatingRoute ? 'Recalculando...' : 'Recalcular ruta' }}
       </button>
@@ -114,9 +114,9 @@
       <!-- Mensaje si faltan datos -->
       <div
         v-if="!canCalculateRoute && !hasRoute"
-        class="p-3 bg-[#fef3c7] border border-[#fbbf24] rounded-lg"
+        class="p-3 bg-amber-light border border-amber-border rounded-lg"
       >
-        <p class="text-xs text-[#92400e]">
+        <p class="text-xs text-amber-dark">
           ⚠️ {{ getMissingDataMessage() }}
         </p>
       </div>
@@ -134,12 +134,12 @@
       <!-- Error -->
       <div
         v-if="routingError"
-        class="p-3 bg-[#fee2e2] border border-[#ef4444] rounded-lg"
+        class="p-3 bg-red-light border border-red-error rounded-lg"
       >
-        <p class="text-xs font-semibold text-[#991b1b] mb-1">
+        <p class="text-xs font-semibold text-red-dark mb-1">
           ❌ Error al calcular la ruta
         </p>
-        <p class="text-xs text-[#991b1b]">
+        <p class="text-xs text-red-dark">
           {{ routingError.message }}
         </p>
       </div>
@@ -149,7 +149,7 @@
         v-if="hasRoute || originName || destinationName"
         @click="handleClearAll"
         type="button"
-        class="w-full py-2 px-3 text-xs font-medium text-[#6b7280] border border-[#e5e7eb] rounded-lg hover:bg-[#f9fafb] transition-all duration-200 cursor-pointer"
+        class="w-full py-2 px-3 text-xs font-medium text-gray-medium border border-gray-light rounded-lg hover:bg-gray-ultra-light transition-all duration-200 cursor-pointer"
       >
         🗑️ Limpiar todo
       </button>
@@ -338,7 +338,7 @@ const getMissingDataMessage = (): string => {
 /* Scroll personalizado */
 .overflow-y-auto {
   scrollbar-width: thin;
-  scrollbar-color: #4DB487 #f3f4f6;
+  scrollbar-color: var(--color-primary) var(--color-gray-border);
 }
 
 .overflow-y-auto::-webkit-scrollbar {
@@ -346,15 +346,15 @@ const getMissingDataMessage = (): string => {
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: var(--color-gray-border);
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #4DB487;
+  background: var(--color-primary);
   border-radius: 3px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #35a372;
+  background: var(--color-primary-hover);
 }
 </style>

@@ -10,14 +10,14 @@
  */
 
 <template>
-  <ul v-if="results.length > 0" class="mt-3 max-h-80 overflow-y-auto rounded-lg border border-[#e5e7eb]">
+  <ul v-if="results.length > 0" class="mt-3 max-h-80 overflow-y-auto rounded-lg border border-gray-light">
     <li
       v-for="place in results"
       :key="place.id"
-      class="border-b border-[#f3f4f6] px-4 py-3 transition-all duration-200"
+      class="border-b border-gray-border px-4 py-3 transition-all duration-200"
       :class="{
-        'bg-[#d1fae5] border-[#4DB487]': place.id === activePlace,
-        'hover:bg-[#f0fdf4]': place.id !== activePlace
+        'bg-green-border border-primary': place.id === activePlace,
+        'hover:bg-green-light': place.id !== activePlace
       }"
     >
       <!-- Información del lugar - clickeable -->
@@ -25,8 +25,8 @@
         @click="onPlaceClick(place.id)"
         class="cursor-pointer"
       >
-        <h5 class="font-semibold text-[#1f2937] text-sm mb-1">{{ place.name }}</h5>
-        <p class="text-[#6b7280] text-xs mb-3">{{ place.display_name }}</p>
+        <h5 class="font-semibold text-gray-dark text-sm mb-1">{{ place.name }}</h5>
+        <p class="text-gray-medium text-xs mb-3">{{ place.display_name }}</p>
       </div>
 
       <!-- Botones de acción -->
@@ -34,7 +34,7 @@
         <!-- Botón: Cómo llegar -->
         <button 
           @click.stop="handleGetDirections(place.id)"
-          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg cursor-pointer"
+          class="px-3 py-1.5 text-xs font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-primary-darker hover:shadow-lg cursor-pointer"
           title="Calcular ruta hacia este lugar"
         >
           Cómo llegar
@@ -45,7 +45,7 @@
     </li>
   </ul>
 
-  <div v-else-if="isSearching" class="mt-3 text-center text-[#6b7280] text-sm">
+  <div v-else-if="isSearching" class="mt-3 text-center text-gray-medium text-sm">
     Buscando lugares...
   </div>
 </template>

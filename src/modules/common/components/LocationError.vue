@@ -9,13 +9,13 @@
  */
 
 <template>
-  <div class="flex items-center justify-center w-full h-full bg-[#f9fafb]">
-    <div class="max-w-md mx-4 p-6 bg-white rounded-lg border border-[#e5e7eb] shadow-sm">
+  <div class="flex items-center justify-center w-full h-full bg-gray-ultra-light">
+    <div class="max-w-md mx-4 p-6 bg-white rounded-lg border border-gray-light shadow-sm">
       <!-- Icono de error -->
       <div class="mb-4 text-center">
         <svg
           class="w-16 h-16 mx-auto"
-          :class="isPermissionDenied ? 'text-[#f59e0b]' : 'text-[#ef4444]'"
+          :class="isPermissionDenied ? 'text-amber-warning' : 'text-red-error'"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -37,12 +37,12 @@
       </div>
 
       <!-- Título -->
-      <h2 class="text-lg font-semibold text-[#1f2937] text-center mb-2">
+      <h2 class="text-lg font-semibold text-gray-dark text-center mb-2">
         {{ errorTitle }}
       </h2>
 
       <!-- Mensaje descriptivo -->
-      <p class="text-[#6b7280] text-sm text-center mb-4">
+      <p class="text-gray-medium text-sm text-center mb-4">
         {{ errorMessage }}
       </p>
 
@@ -50,18 +50,18 @@
       <button
         v-if="!isPermissionDenied"
         @click="$emit('retry')"
-        class="w-full px-4 py-2.5 text-sm font-medium text-white rounded transition-all duration-200 bg-[#4DB487] hover:bg-[#35a372] hover:shadow-lg cursor-pointer"
+        class="w-full px-4 py-2.5 text-sm font-medium text-white rounded transition-all duration-200 bg-primary hover:bg-primary-hover hover:shadow-lg cursor-pointer"
       >
         Volver a intentar
       </button>
 
       <!-- Información adicional -->
       <div class="mt-4 p-3 rounded-lg border"
-           :class="isPermissionDenied ? 'bg-[#fef3c7] border-[#fde68a]' : 'bg-[#f0fdf4] border-[#d1fae5]'">
-        <p class="text-xs font-semibold text-[#1f2937] mb-2">
+           :class="isPermissionDenied ? 'bg-amber-light border-amber-border' : 'bg-green-light border-green-border'">
+        <p class="text-xs font-semibold text-gray-dark mb-2">
           {{ isPermissionDenied ? '🔒 Permiso denegado:' : '💡 Consejos:' }}
         </p>
-        <ul class="text-xs text-[#6b7280] space-y-1">
+        <ul class="text-xs text-gray-medium space-y-1">
           <li v-if="isPermissionDenied">• Haz clic en el icono 🔒 o ⓘ en la barra de direcciones del navegador</li>
           <li v-if="isPermissionDenied">• Busca "Permisos" o "Ubicación" en la configuración del sitio</li>
           <li v-if="isPermissionDenied">• Cambia el permiso de "Bloqueado" a "Permitir"</li>

@@ -43,7 +43,7 @@
               v-if="type === 'origin' && showMyLocationButton"
               @click="handleMyLocation"
               type="button"
-              class="p-1 text-xs text-[#4DB487] hover:bg-[#f0fdf4] rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-primary hover:bg-green-light rounded transition-all duration-200 cursor-pointer"
               title="Usar mi ubicación"
             >
               📍
@@ -54,7 +54,7 @@
               v-if="type === 'waypoint' && showRemoveButton"
               @click="handleRemove"
               type="button"
-              class="p-1 text-xs text-[#ef4444] hover:bg-[#fee2e2] rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-red-error hover:bg-red-light rounded transition-all duration-200 cursor-pointer"
               title="Eliminar parada"
             >
               ✕
@@ -65,7 +65,7 @@
               v-if="searchQuery"
               @click="handleClear"
               type="button"
-              class="p-1 text-xs text-[#6b7280] hover:bg-[#f3f4f6] rounded transition-all duration-200 cursor-pointer"
+              class="p-1 text-xs text-gray-medium hover:bg-gray-border rounded transition-all duration-200 cursor-pointer"
               title="Limpiar"
             >
               ⌫
@@ -76,19 +76,19 @@
         <!-- Resultados de autocompletado -->
         <div
           v-if="showResults && filteredResults.length > 0"
-          class=" absolute z-50 w-3xs mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg max-h-48 overflow-y-auto"
+          class=" absolute z-50 w-3xs mt-1 bg-white border border-gray-light rounded-lg shadow-lg max-h-48 overflow-y-auto"
         >
           <button
             v-for="place in filteredResults"
             :key="place.id"
             @click="handleSelectPlace(place)"
             type="button"
-            class="w-full text-left px-3 py-2 hover:bg-[#f0fdf4] transition-all duration-200 border-b border-[#f3f4f6] last:border-b-0 cursor-pointer"
+            class="w-full text-left px-3 py-2 hover:bg-green-light transition-all duration-200 border-b border-gray-border last:border-b-0 cursor-pointer"
           >
-            <p class="text-sm font-medium text-[#1f2937] truncate">
+            <p class="text-sm font-medium text-gray-dark truncate">
               {{ place.name }}
             </p>
-            <p class="text-xs text-[#6b7280] truncate">
+            <p class="text-xs text-gray-medium truncate">
               {{ place.display_name }}
             </p>
           </button>
@@ -97,17 +97,17 @@
         <!-- Mensaje cuando está buscando -->
         <div
           v-if="showResults && isSearching"
-          class="absolute z-50 w-full mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg p-3 text-center"
+          class="absolute z-50 w-full mt-1 bg-white border border-gray-light rounded-lg shadow-lg p-3 text-center"
         >
-          <p class="text-xs text-[#6b7280]"> Buscando...</p>
+          <p class="text-xs text-gray-medium"> Buscando...</p>
         </div>
 
         <!-- Mensaje cuando no hay resultados -->
         <div
           v-if="showResults && !isSearching && searchQuery && filteredResults.length === 0"
-          class="absolute z-50 w-full mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg p-3 text-center"
+          class="absolute z-50 w-full mt-1 bg-white border border-gray-light rounded-lg shadow-lg p-3 text-center"
         >
-          <p class="text-xs text-[#6b7280]">No se encontraron lugares</p>
+          <p class="text-xs text-gray-medium">No se encontraron lugares</p>
         </div>
       </div>
     </div>
@@ -300,13 +300,13 @@ const getIcon = (): string => {
 const getIconClasses = (): string => {
   switch (props.type) {
     case 'origin':
-      return 'bg-[#4DB487] text-white font-bold';
+      return 'bg-primary text-white font-bold';
     case 'destination':
-      return 'bg-[#ef4444] text-white font-bold';
+      return 'bg-red-error text-white font-bold';
     case 'waypoint':
-      return 'bg-[#6b7280] text-white font-bold';
+      return 'bg-gray-medium text-white font-bold';
     default:
-      return 'bg-[#6b7280] text-white';
+      return 'bg-gray-medium text-white';
   }
 };
 
@@ -314,15 +314,15 @@ const getIconClasses = (): string => {
  * getInputClasses: Retorna las clases del input según el tipo
  */
 const getInputClasses = (): string => {
-  const baseClasses = 'border-[#e5e7eb]';
+  const baseClasses = 'border-gray-light';
   
   switch (props.type) {
     case 'origin':
-      return `${baseClasses} focus:border-[#4DB487] focus:ring-[#4DB487]/20`;
+      return `${baseClasses} focus:border-primary focus:ring-primary/20`;
     case 'destination':
-      return `${baseClasses} focus:border-[#ef4444] focus:ring-[#ef4444]/20`;
+      return `${baseClasses} focus:border-red-error focus:ring-red-error/20`;
     case 'waypoint':
-      return `${baseClasses} focus:border-[#6b7280] focus:ring-[#6b7280]/20`;
+      return `${baseClasses} focus:border-gray-medium focus:ring-gray-medium/20`;
     default:
       return baseClasses;
   }

@@ -11,7 +11,7 @@
 <template>
   <div v-if="hasAlternatives" class="space-y-2">
     <!-- Título -->
-    <h4 class="text-sm font-semibold text-[#1f2937] px-1">
+    <h4 class="text-sm font-semibold text-gray-dark px-1">
       Rutas disponibles
     </h4>
 
@@ -23,16 +23,16 @@
         @click="handleSelectRoute(routeInfo.index)"
         class="relative p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer"
         :class="routeInfo.route.isSelected 
-          ? 'border-[#42b983] bg-[#f0fdf4]' 
-          : 'border-[#e5e7eb] bg-white hover:border-[#42b983] hover:bg-[#f9fafb] cursor-pointer'"
+          ? 'border-vue bg-green-light' 
+          : 'border-gray-light bg-white hover:border-vue hover:bg-gray-ultra-light cursor-pointer'"
       >
         <!-- Badge superior -->
         <div class="flex items-start justify-between mb-2">
           <span 
             class="text-xs font-bold px-2 py-1 rounded-full"
             :class="routeInfo.route.isSelected 
-              ? 'bg-[#42b983] text-white' 
-              : 'bg-[#e5e7eb] text-[#6b7280]'"
+              ? 'bg-vue text-white' 
+              : 'bg-gray-light text-gray-medium'"
           >
             <template v-if="routeInfo.isFastest">
               ⚡ Más rápida
@@ -45,7 +45,7 @@
             </template>
           </span>
           <!-- Checkmark si está seleccionada -->
-          <span v-if="routeInfo.route.isSelected" class="text-[#42b983] text-lg">✓</span>
+          <span v-if="routeInfo.route.isSelected" class="text-vue text-lg">✓</span>
         </div>
 
         <!-- Información de la ruta -->
@@ -53,10 +53,10 @@
           <div class="flex items-center gap-2 ml-1">
            
             <div>
-              <p class="text-sm font-bold text-[#1f2937]">
+              <p class="text-sm font-bold text-gray-dark">
                 {{ formatDuration(routeInfo.route.duration) }}
               </p>
-              <p class="text-xs text-[#6b7280]">
+              <p class="text-xs text-gray-medium">
                 {{ formatDistance(routeInfo.route.distance) }}
               </p>
             </div>
@@ -65,10 +65,10 @@
           <!-- Diferencia con la más rápida (solo si no es la más rápida) -->
           <div v-if="!routeInfo.isFastest" class="text-right">
             <p class="text-xs" 
-               :class="routeInfo.timeDiff > 0 ? 'text-[#ef4444]' : 'text-[#10b981]'">
+               :class="routeInfo.timeDiff > 0 ? 'text-red-error' : 'text-green-success'">
               {{ formatTimeDifference(routeInfo.timeDiff) }}
             </p>
-            <p class="text-xs text-[#6b7280]">
+            <p class="text-xs text-gray-medium">
               {{ formatDistanceDifference(routeInfo.distanceDiff) }}
             </p>
           </div>
