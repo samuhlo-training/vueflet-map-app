@@ -169,8 +169,6 @@ class RoutingService {
       // 1. Construir la URL de la API con soporte para alternativas
       const url = this.buildOSRMUrl(waypoints, travelMode, maxAlternatives);
 
-      console.log("🚗 Llamando a OSRM con alternativas:", url);
-
       // 2. Hacer la petición HTTP
       const response = await fetch(url);
 
@@ -198,15 +196,7 @@ class RoutingService {
         this.transformOSRMRoute(osrmRoute, waypoints, travelMode, index)
       );
 
-      console.log(
-        `✅ ${routes.length} ruta(s) calculada(s):`,
-        routes.map((r, i) => ({
-          index: i,
-          distance: r.distance,
-          duration: r.duration,
-          segments: r.segments.length,
-        }))
-      );
+      // Rutas calculadas
 
       return routes;
     } catch (error) {

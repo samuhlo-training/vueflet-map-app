@@ -127,7 +127,7 @@ export const usePlacesStore = defineStore("places", () => {
           `format=json&q=${encodeURIComponent(query)}&limit=4`
       );
       const data = await response.json();
-      console.log({ data });
+      // Datos obtenidos
 
       searchResults.value = data.map((item: any) => ({
         id: item.place_id,

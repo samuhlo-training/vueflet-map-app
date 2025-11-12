@@ -216,7 +216,6 @@ const fitRouteBounds = () => {
     duration: 1.0      // 1 segundo de animación
   });
   
-  console.log('🗺️ Mapa ajustado para mostrar la ruta completa');
 };
 
 /**
@@ -226,7 +225,6 @@ const fitRouteBounds = () => {
  * en la ruta principal y la anterior pasa a ser alternativa.
  */
 const handleAlternativeClick = (index: number) => {
-  console.log('🔄 Cambiando a ruta alternativa', index);
   routingStore.selectAlternativeRoute(index);
   
   // Opcional: ajustar el mapa a la nueva ruta

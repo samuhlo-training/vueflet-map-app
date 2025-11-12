@@ -54,8 +54,8 @@ const { getCurrentPosition } = placesStore
 // Función para intentar obtener la ubicación
 const handleRetry = async () => {
   try {
-    const location = await getCurrentPosition()
-    console.log('Ubicación obtenida:', location)
+    await getCurrentPosition()
+    // Ubicación obtenida
   } catch (error) {
     console.error('Error al obtener ubicación:', error)
   }

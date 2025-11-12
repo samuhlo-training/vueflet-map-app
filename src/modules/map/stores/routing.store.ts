@@ -464,10 +464,7 @@ export const useRoutingStore = defineStore("routing", () => {
     clearRoutingError();
 
     try {
-      console.log("🚗 Calculando rutas (con alternativas)...", {
-        waypoints: waypoints.value.length,
-        travelMode: travelMode.value,
-      });
+      // Calculando rutas (con alternativas)
 
       // Llamar al servicio de routing pidiendo hasta 2 rutas alternativas
       const routes = await routingService.getRoutes(
@@ -494,13 +491,7 @@ export const useRoutingStore = defineStore("routing", () => {
       // Guardar las alternativas
       alternativeRoutes.value = alternatives;
 
-      console.log("✅ Rutas calculadas exitosamente:", {
-        principal: {
-          distance: mainRoute.distance,
-          duration: mainRoute.duration,
-        },
-        alternativas: alternatives.length,
-      });
+      // Rutas calculadas exitosamente
     } catch (error) {
       // Si el servicio devuelve un RoutingError, lo usamos directamente
       if (isRoutingError(error)) {
@@ -538,10 +529,7 @@ export const useRoutingStore = defineStore("routing", () => {
       return;
     }
 
-    console.log("⏱️ Recalculando tiempos...", {
-      from: currentRoute.value.travelMode,
-      to: newTravelMode,
-    });
+    // Recalculando tiempos
 
     try {
       // 1. Recalcular la ruta principal
@@ -559,13 +547,7 @@ export const useRoutingStore = defineStore("routing", () => {
       setRoute(updatedRoute);
       alternativeRoutes.value = updatedAlternatives;
 
-      console.log("✅ Tiempos recalculados:", {
-        principal: {
-          distance: updatedRoute.distance,
-          duration: updatedRoute.duration,
-        },
-        alternativas: updatedAlternatives.length,
-      });
+      // Tiempos recalculados
     } catch (error) {
       console.error("❌ Error recalculando tiempos:", error);
       setRoutingError({
@@ -637,10 +619,7 @@ export const useRoutingStore = defineStore("routing", () => {
       }));
     }
 
-    console.log("✅ Ruta seleccionada (sin intercambio):", {
-      alternativeIndex,
-      isMainSelected: currentRoute.value?.isSelected,
-    });
+    // Ruta seleccionada (sin intercambio)
   };
 
   // ============================================

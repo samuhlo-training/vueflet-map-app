@@ -51,7 +51,6 @@ export const useSearchResults = () => {
     // Retornar el zoom específico o un valor por defecto
     const normalizedType = addresstype.toLowerCase();
     const zoom = zoomLevels[normalizedType] || 13;
-    console.log(`Address type: "${addresstype}" -> Zoom: ${zoom}`);
     return zoom;
   };
 
@@ -62,7 +61,6 @@ export const useSearchResults = () => {
     if (place) {
       const [lat, lon] = place.coordinates;
       const zoom = getZoomByAddressType(place.addresstype);
-      console.log(`Moviendo a: [${lat}, ${lon}] con zoom ${zoom}`);
       mapStore.setCenterWithAnimation(lat, lon, zoom, 2100);
     }
     placesStore.setActivePlaceId(placeId);
@@ -71,8 +69,8 @@ export const useSearchResults = () => {
   // Observar cambios en los resultados
   watch(
     () => placesStore.searchResults,
-    (newResults) => {
-      console.log("Resultados actualizados:", newResults);
+    () => {
+      // Resultados actualizados
     }
   );
 
@@ -96,8 +94,6 @@ export const useSearchResults = () => {
       return;
     }
 
-    console.log("🗺️ Iniciando direcciones hacia:", place.name);
-
     // 1. Cambiar al modo de direcciones
     routingStore.setDirectionsMode();
 
@@ -116,12 +112,8 @@ export const useSearchResults = () => {
 
       // 4. Calcular la ruta automáticamente
       // (solo si tenemos origen y destino)
-      console.log("✅ Origen y destino establecidos, calculando ruta...");
       routingStore.calculateRoute();
     } else {
-      console.log(
-        "⚠️ No hay ubicación del usuario, solo se estableció el destino"
-      );
       // El usuario tendrá que establecer manualmente el origen
     }
 
