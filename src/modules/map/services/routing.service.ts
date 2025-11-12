@@ -365,9 +365,10 @@ class RoutingService {
       }));
     }
 
-    // Crear nueva ruta con tiempos actualizados
+    // Crear nueva ruta con tiempos actualizados y nuevo ID
     return {
       ...route,
+      id: crypto.randomUUID(), // 🆕 Nuevo ID para forzar actualización de UI
       segments: updatedSegments,
       duration: totalDuration,
       travelMode: newTravelMode,

@@ -66,7 +66,7 @@
       <div class="max-h-64 overflow-y-auto">
         <div
           v-for="(segment, index) in route.segments"
-          :key="index"
+          :key="`${route.id}-segment-${index}`"
           class="px-4 py-3 border-b border-[#f3f4f6] last:border-b-0 hover:bg-[#f9fafb] transition-all duration-200"
         >
           <div class="flex items-start gap-3">
@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRef} from 'vue';
+import { ref, toRef, watch} from 'vue';
 import type { Route } from '@/modules/map/interfaces/routing.interfaces';
 import { useFormattedRoute } from '../../composables/useFormattedRoute';
 
@@ -136,6 +136,26 @@ const props = withDefaults(defineProps<Props>(), {
 // ============================================
 
 const instructionsExpanded = ref(props.defaultExpanded);
+
+// ============================================
+// WATCHERS
+// ============================================
+
+/**
+ * Cerrar las instrucciones cuando cambie la ruta
+ * Esto fuerza a que el usuario vea el resumen de la nueva ruta
+ * y luego pueda expandir las instrucciones actualizadas
+ */
+watch(
+  () => props.route,
+  (newRoute, oldRoute) => {
+    // Si cambió la ruta completa (diferente ID o diferente objeto)
+    if (newRoute?.id !== oldRoute?.id && instructionsExpanded.value) {
+      instructionsExpanded.value = false;
+    }
+  },
+  { deep: false } // No necesitamos deep watch, solo detectar cambio de referencia
+);
 
 // ============================================
 // COMPUTED

@@ -124,7 +124,8 @@
       <!-- Información de la ruta -->
       <RouteInfo
         v-if="hasRoute || routingError"
-        :route="currentRoute"
+        :key="selectedRoute?.id || 'no-route'"
+        :route="selectedRoute"
       />
 
       <!-- 🆕 Rutas alternativas -->
@@ -196,11 +197,27 @@ const destinationWaypoint = computed(() => routingStore.destinationWaypoint);
 const canCalculateRoute = computed(() => routingStore.canCalculateRoute);
 const isCalculatingRoute = computed(() => routingStore.isCalculatingRoute);
 const hasRoute = computed(() => routingStore.hasRoute);
-const currentRoute = computed(() => routingStore.currentRoute);
 const routingError = computed(() => routingStore.routingError);
 
 const canSwap = computed(() => {
   return originWaypoint.value !== undefined && destinationWaypoint.value !== undefined;
+});
+
+/**
+ * selectedRoute: Devuelve la ruta que está actualmente seleccionada
+ * Puede ser la ruta principal o una alternativa
+ */
+const selectedRoute = computed(() => {
+  // Buscar si hay alguna ruta alternativa seleccionada
+  const selectedAlternative = routingStore.alternativeRoutes.find(route => route.isSelected);
+  
+  // Si hay una alternativa seleccionada, devolverla
+  if (selectedAlternative) {
+    return selectedAlternative;
+  }
+  
+  // Si no, devolver la ruta principal (currentRoute)
+  return routingStore.currentRoute;
 });
 
 // ============================================
@@ -297,6 +314,7 @@ const handleCalculateRoute = () => {
  */
 const handleClearAll = () => {
   routingStore.clearRoute();
+
   originName.value = '';
   destinationName.value = '';
 };

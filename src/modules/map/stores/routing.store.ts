@@ -270,10 +270,15 @@ export const useRoutingStore = defineStore("routing", () => {
     coordinates: [number, number],
     placeId?: number
   ) => {
-    // Si ya existe un origen, lo actualizamos
+    // Si ya existe un origen, lo actualizamos (siempre con order 0)
     const existingOrigin = originWaypoint.value;
     if (existingOrigin) {
-      updateWaypoint(existingOrigin.id, { name, coordinates, placeId });
+      updateWaypoint(existingOrigin.id, {
+        name,
+        coordinates,
+        placeId,
+        order: 0,
+      });
     } else {
       // Si no existe, lo creamos
       addWaypoint({
@@ -303,10 +308,18 @@ export const useRoutingStore = defineStore("routing", () => {
     coordinates: [number, number],
     placeId?: number
   ) => {
-    // Si ya existe un destino, lo actualizamos
+    // Si ya existe un destino, lo actualizamos (siempre con order 1 si solo hay 2 waypoints)
     const existingDestination = destinationWaypoint.value;
     if (existingDestination) {
-      updateWaypoint(existingDestination.id, { name, coordinates, placeId });
+      // Para solo 2 waypoints, el destino siempre debe tener order 1
+      const newOrder =
+        waypoints.value.length <= 2 ? 1 : existingDestination.order;
+      updateWaypoint(existingDestination.id, {
+        name,
+        coordinates,
+        placeId,
+        order: newOrder,
+      });
     } else {
       // Si no existe, lo creamos
       // El order del destino es siempre el máximo + 1
@@ -373,16 +386,13 @@ export const useRoutingStore = defineStore("routing", () => {
 
     if (!origin || !destination) return;
 
-    // Intercambiamos los tipos
-    updateWaypoint(origin.id, { type: "destination" });
-    updateWaypoint(destination.id, { type: "origin" });
+    // Intercambiamos los tipos Y forzamos los orders correctos
+    // El nuevo origen SIEMPRE debe tener order 0
+    // El nuevo destino SIEMPRE debe tener order 1
+    updateWaypoint(origin.id, { type: "destination", order: 1 });
+    updateWaypoint(destination.id, { type: "origin", order: 0 });
 
-    // Intercambiamos los orders
-    const tempOrder = origin.order;
-    updateWaypoint(origin.id, { order: destination.order });
-    updateWaypoint(destination.id, { order: tempOrder });
-
-    // Reordenar
+    // Reordenar el array por order
     waypoints.value.sort((a, b) => a.order - b.order);
 
     // Si ya hay ruta, recalcular
@@ -466,9 +476,15 @@ export const useRoutingStore = defineStore("routing", () => {
     try {
       // Calculando rutas (con alternativas)
 
+      // Ordenar waypoints por 'order' antes de enviar a la API
+      // Esto asegura que el primer waypoint sea el origen y el último el destino
+      const sortedWaypoints = [...waypoints.value].sort(
+        (a, b) => a.order - b.order
+      );
+
       // Llamar al servicio de routing pidiendo hasta 2 rutas alternativas
       const routes = await routingService.getRoutes(
-        waypoints.value,
+        sortedWaypoints,
         travelMode.value,
         2 // Máximo 2 alternativas (total: 3 rutas)
       );
