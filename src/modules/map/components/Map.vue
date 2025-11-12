@@ -1,3 +1,13 @@
+/**
+ * MAP COMPONENT - COMPONENTE PRINCIPAL DEL MAPA
+ * 
+ * Componente que renderiza el mapa interactivo con:
+ * - Capa base de OpenStreetMap
+ * - Marcadores para ubicación del usuario y resultados de búsqueda
+ * - Marcadores para rutas de direcciones (origen/destino)
+ * - Integración con Leaflet
+ */
+
 <template>
    <l-map
         ref="mapRef"

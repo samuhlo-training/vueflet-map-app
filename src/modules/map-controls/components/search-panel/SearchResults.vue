@@ -1,3 +1,14 @@
+/**
+ * SEARCH RESULTS - RESULTADOS DE BÚSQUEDA
+ * 
+ * Componente que muestra los resultados de búsqueda de lugares con:
+ * - Lista de lugares encontrados
+ * - Información detallada de cada lugar
+ * - Botón para calcular ruta hacia el lugar
+ * - Indicador visual del lugar activo
+ * - Manejo de estados de carga
+ */
+
 <template>
   <ul v-if="results.length > 0" class="mt-3 max-h-80 overflow-y-auto rounded-lg border border-[#e5e7eb]">
     <li

@@ -1,3 +1,14 @@
+/**
+ * MARKER POPUP - MARCADOR CON POPUP
+ * 
+ * Componente de marcador del mapa con popup personalizado que incluye:
+ * - Iconos personalizables según el tipo (usuario, búsqueda, origen, destino)
+ * - Información del lugar con título y badge
+ * - Coordenadas opcionales
+ * - Timestamp opcional
+ * - Contenido personalizado a través de slots
+ */
+
 <template>
   <l-marker :lat-lng="location" :icon="currentIcon">
     <l-popup :options="popupOptions">

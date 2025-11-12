@@ -1,3 +1,13 @@
+/**
+ * MAP VIEW - VISTA PRINCIPAL DEL MAPA
+ * 
+ * Vista principal de la aplicación de mapas con:
+ * - Gestión de la ubicación del usuario
+ * - Pantalla de carga mientras se obtiene la ubicación
+ * - Integración con el componente Map
+ * - Controles de búsqueda y ubicación
+ */
+
 <template>
   <div class="w-full h-full">
     <!-- Mostrar información de carga -->

@@ -1,23 +1,83 @@
+/**
+ * PLACES STORE
+ *
+ * Este store gestiona la ubicación del usuario y la búsqueda de lugares:
+ * - Obtención de la ubicación actual del usuario
+ * - Búsqueda de lugares usando Nominatim
+ * - Gestión de resultados de búsqueda
+ * - Control de marcadores de búsqueda
+ */
+
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { UserLocation } from "@/modules/map/interfaces/map.interfaces";
 import type { Place } from "../interfaces/place.interfaces";
 
 export const usePlacesStore = defineStore("places", () => {
-  // State - Cada propiedad separada (patrón correcto de Pinia)
-  const isLoading = ref<boolean>(true);
-  const userLocation = ref<UserLocation>(undefined);
-  const searchResults = ref<Place[]>([]);
-  const isSearching = ref<boolean>(false);
-  const activePlaceId = ref<number | null>(null);
-  const showSearchMarkers = ref<boolean>(true); // Controla si se muestran los marcadores de búsqueda
+  // ============================================
+  // ESTADO (STATE)
+  // ============================================
 
-  // Getters - Propiedades computadas derivadas del estado
+  /**
+   * isLoading: Indica si se está cargando la ubicación inicial
+   * true mientras se obtiene la ubicación del usuario
+   */
+  const isLoading = ref<boolean>(true);
+
+  /**
+   * userLocation: Ubicación actual del usuario
+   * undefined si no se ha obtenido aún
+   */
+  const userLocation = ref<UserLocation>(undefined);
+
+  /**
+   * searchResults: Resultados de la búsqueda de lugares
+   * Array vacío cuando no hay resultados
+   */
+  const searchResults = ref<Place[]>([]);
+
+  /**
+   * isSearching: Indica si se está realizando una búsqueda
+   * true durante las llamadas a la API de Nominatim
+   */
+  const isSearching = ref<boolean>(false);
+
+  /**
+   * activePlaceId: ID del lugar actualmente seleccionado
+   * null si no hay lugar activo
+   */
+  const activePlaceId = ref<number | null>(null);
+
+  /**
+   * showSearchMarkers: Controla si se muestran los marcadores de búsqueda
+   * false cuando estamos en modo direcciones
+   */
+  const showSearchMarkers = ref<boolean>(true);
+
+  // ============================================
+  // GETTERS (COMPUTADOS)
+  // ============================================
+
+  /**
+   * isUserLocationReady: ¿La ubicación del usuario está lista?
+   * true si userLocation tiene un valor definido
+   */
   const isUserLocationReady = computed<boolean>(() => {
     return !!userLocation.value;
   });
 
-  // Actions - Funciones que modifican el estado
+  // ============================================
+  // ACCIONES (ACTIONS)
+  // ============================================
+
+  /**
+   * getCurrentPosition: Obtiene la ubicación actual del usuario
+   *
+   * Usa la API de geolocalización del navegador para obtener
+   * las coordenadas del usuario. Actualiza isLoading y userLocation.
+   *
+   * @returns Promise que resuelve con la ubicación [lat, lon]
+   */
   const getCurrentPosition = (): Promise<UserLocation> => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -36,7 +96,14 @@ export const usePlacesStore = defineStore("places", () => {
     });
   };
 
-  // Búsqueda de lugares por texto
+  /**
+   * searchPlaces: Busca lugares por texto usando Nominatim
+   *
+   * Realiza una búsqueda en la API de OpenStreetMap Nominatim
+   * y actualiza searchResults con los resultados encontrados.
+   *
+   * @param query - Texto a buscar (dirección, lugar, etc.)
+   */
   const searchPlaces = async (query: string): Promise<void> => {
     if (!query) {
       searchResults.value = [];
@@ -70,14 +137,26 @@ export const usePlacesStore = defineStore("places", () => {
     }
   };
 
+  /**
+   * setActivePlaceId: Establece el lugar activo
+   * @param id - ID del lugar a activar, o null para desactivar
+   */
   const setActivePlaceId = (id: number | null) => {
     activePlaceId.value = id;
   };
 
+  /**
+   * hideSearchMarkers: Oculta los marcadores de búsqueda
+   * Se usa cuando cambiamos a modo direcciones
+   */
   const hideSearchMarkers = () => {
     showSearchMarkers.value = false;
   };
 
+  /**
+   * showSearchMarkersAgain: Vuelve a mostrar los marcadores de búsqueda
+   * Se usa cuando volvemos a modo búsqueda
+   */
   const showSearchMarkersAgain = () => {
     showSearchMarkers.value = true;
   };

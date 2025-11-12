@@ -1,3 +1,13 @@
+/**
+ * SEARCH BAR - BARRA DE BÚSQUEDA PRINCIPAL
+ * 
+ * Barra de búsqueda que alterna entre dos modos:
+ * - Modo búsqueda: input para buscar lugares con resultados
+ * - Modo direcciones: panel completo de direcciones
+ * - Integración con composables de búsqueda
+ * - Gestión de estado de routing
+ */
+
 <template>
   <!-- Modo de búsqueda normal -->
   <div v-if="!isDirectionsMode" class="z-999 absolute bg-white p-2 rounded shadow w-64">

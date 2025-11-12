@@ -1,6 +1,21 @@
+/**
+ * SCREEN LOADER - COMPONENTE DE CARGA
+ *
+ * Componente que muestra un indicador de carga a pantalla completa:
+ * - Spinner animado con SVG
+ * - Mensaje de carga personalizable
+ * - Accesibilidad con roles ARIA
+ * - Diseño responsive y centrado
+ */
+
+/**
+ * Props del componente ScreenLoader
+ */
 <template>
+  <!-- Contenedor principal a pantalla completa -->
   <div class="h-screen w-screen flex justify-center items-center flex-col">
 
+    <!-- Spinner animado con accesibilidad -->
     <div role='status' aria-label='loading'>
    <svg class='w-12 h-12 stroke-amber-600 animate-spin ' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
    <g clip-path='url(#clip0_9023_61563)'>
@@ -14,6 +29,8 @@
    </svg>
    <span class='sr-only'>Loading...</span>
    </div>
+
+   <!-- Mensaje de carga -->
    <h3 class="text-xl font-bold mt-4">{{ msg }}</h3>
   </div>
 </template>
@@ -21,6 +38,7 @@
 <script setup lang="ts">
 
 defineProps<{
+  /** Mensaje opcional a mostrar debajo del spinner */
   msg?: string
 }>()
 </script>
