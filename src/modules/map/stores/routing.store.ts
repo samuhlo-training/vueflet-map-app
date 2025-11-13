@@ -289,6 +289,12 @@ export const useRoutingStore = defineStore("routing", () => {
         order: 0,
         placeId,
       });
+
+      // Si ya existe un destino, asegurarnos de que tenga order 1
+      const existingDestination = destinationWaypoint.value;
+      if (existingDestination) {
+        updateWaypoint(existingDestination.id, { order: 1 });
+      }
     }
     // Si ya hay destino, calcular ruta automáticamente
     if (destinationWaypoint.value) {
@@ -321,21 +327,29 @@ export const useRoutingStore = defineStore("routing", () => {
         order: newOrder,
       });
     } else {
-      // Si no existe, lo creamos
-      // El order del destino es siempre el máximo + 1
-      const maxOrder =
-        waypoints.value.length > 0
-          ? Math.max(...waypoints.value.map((wp) => wp.order))
-          : -1;
+      // Si no existe, lo creamos con order 1 (para solo 2 waypoints)
+      // O maxOrder + 1 si hay más waypoints intermedios
+      const order =
+        waypoints.value.length === 0
+          ? 1
+          : waypoints.value.length === 1
+          ? 1
+          : Math.max(...waypoints.value.map((wp) => wp.order)) + 1;
 
       addWaypoint({
         id: crypto.randomUUID(),
         name,
         coordinates,
         type: "destination",
-        order: maxOrder + 1,
+        order,
         placeId,
       });
+
+      // Si ya existe un origen, asegurarnos de que tenga order 0
+      const existingOrigin = originWaypoint.value;
+      if (existingOrigin) {
+        updateWaypoint(existingOrigin.id, { order: 0 });
+      }
     }
 
     // Si ya hay origen, calcular ruta automáticamente
