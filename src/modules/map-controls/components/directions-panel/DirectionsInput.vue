@@ -300,9 +300,9 @@ const getIcon = (): string => {
 const getIconClasses = (): string => {
   switch (props.type) {
     case 'origin':
-      return 'bg-primary text-white font-bold';
+      return 'bg-primary text-gray-darker font-bold font-lg';
     case 'destination':
-      return 'bg-red-error text-white font-bold';
+      return 'bg-gray-darker text-primary font-bold';
     case 'waypoint':
       return 'bg-gray-medium text-white font-bold';
     default:
