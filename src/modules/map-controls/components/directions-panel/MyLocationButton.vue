@@ -1,6 +1,6 @@
 <template>
-    <button @click="centerMapOnUserLocation" class=" px-3 py-1.5 text-md font-medium text-white bg-primary rounded hover:shadow-lg hover:bg-gray-darker transition-all duration-200 cursor-pointer z-999">
-        Mi Ubicación
+    <button @click="centerMapOnUserLocation"  class=" px-3 pt-1.5 text-md font-medium text-white bg-primary rounded hover:shadow-lg hover:bg-gray-darker transition-all duration-200 cursor-pointer z-999">
+        <i class="material-icons">my_location</i>
     </button>
 </template>
 

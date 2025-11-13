@@ -18,11 +18,6 @@
    
     <!-- Mostrar error si no se puede obtener la ubicación -->
     <LocationError v-else :errorCode="locationError" @retry="handleRetry" />
-
-    <!-- Zona Botones Derecha - Siempre visible cuando hay ubicación -->
-    <div v-if="userLocation" class="absolute top-3 right-4 z-999">
-      <MyLocationButton />
-    </div>
     
     <!-- Zona Barra de Búsqueda Izquierda - Siempre visible cuando hay ubicación -->
     <div v-if="userLocation" class="absolute top-3 left-4">
@@ -38,7 +33,6 @@ import { usePlacesStore } from '@/modules/map/stores/places.store'
 import ScreenLoader from '@/modules/common/components/ScreenLoader.vue'
 import LocationError from '@/modules/common/components/LocationError.vue'
 import Map from '@/modules/map/components/Map.vue'
-import MyLocationButton from '@/modules/map-controls/components/directions-panel/MyLocationButton.vue'
 import SearchBar from '@/modules/map-controls/components/search-panel/SearchBar.vue'
 
 
